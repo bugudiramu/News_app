@@ -122,7 +122,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                 return Column(
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(4.0),
                       child: Card(
                         color: Colors.black54,
                         shape: RoundedRectangleBorder(
@@ -195,15 +195,12 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                                       : news[i],
                                                 )));
                                   },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text(
-                                      "Read More",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20.0,
-                                          letterSpacing: 0.8),
-                                    ),
+                                  child: Text(
+                                    "Read More",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                        letterSpacing: 0.8),
                                   ),
                                 ),
                               ),
@@ -225,7 +222,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                 return Column(
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(4.0),
                       child: Card(
                         color: Colors.black54,
                         shape: RoundedRectangleBorder(
@@ -301,15 +298,12 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                                       : allnews[i],
                                                 )));
                                   },
-                                  child: Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text(
-                                      "Read More",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 20.0,
-                                          letterSpacing: 0.8),
-                                    ),
+                                  child: Text(
+                                    "Read More",
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20.0,
+                                        letterSpacing: 0.8),
                                   ),
                                 ),
                               ),

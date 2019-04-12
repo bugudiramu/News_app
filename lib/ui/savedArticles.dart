@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 // import 'allnews.dart';
+import 'package:url_launcher/url_launcher.dart';
+// import 'dart:async';
 
 class SavedArticles extends StatefulWidget {
   final articles;
@@ -62,7 +64,7 @@ class _SavedArticlesState extends State<SavedArticles> {
                 padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
                 child: Row(
                   children: <Widget>[
-                    Text("Written by :"),
+                    Text("Posted by :"),
                     Text(
                       "${widget.articles['author'] == null ? 'Ananymous Author' : widget.articles['author'].toString()}",
                       style: TextStyle(
@@ -90,15 +92,28 @@ class _SavedArticlesState extends State<SavedArticles> {
               Container(
                   padding:
                       EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
-                  child: Column(
+                  child: Row(
                     children: <Widget>[
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Text("For More Info Visit following URL :"),
                       ),
-                      Text(
-                        "${widget.articles['url'] == null ? 'Loading' : widget.articles['url'].toString()}",
-                        style: TextStyle(color: Colors.white70),
+                      InkWell(
+                        onTap: () async {
+                          if (await canLaunch(
+                              "${widget.articles['url'] == null ? 'Loading' : widget.articles['url'].toString()}")) {
+                            await launch(
+                                "${widget.articles['url'].toString()}");
+                          } else {
+                            Exception("URL doesn't exist");
+                          }
+                        },
+                        child: Text(
+                          "Click here",
+                          style: TextStyle(
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline),
+                        ),
                       ),
                     ],
                   )),
@@ -107,6 +122,3 @@ class _SavedArticlesState extends State<SavedArticles> {
         ));
   }
 }
-// Center(
-//   child: Text(widget.articles['author'].toString()),
-// )
