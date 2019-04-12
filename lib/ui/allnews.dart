@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'savedArticles.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 
 class AllNews extends StatefulWidget {
   @override
@@ -111,217 +111,235 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
           centerTitle: true,
           elevation: 0,
         ),
-        body: TabBarView(
+        //  Stack(
+        //         children: <Widget>[],
+        //       ),
+        body: Stack(
           children: <Widget>[
-            // Building list of trending news from news[] list
-            ListView.builder(
-              itemCount: news == null
-                  ? Center(
-                      child: Text(
-                        "Loading!",
-                        style: TextStyle(color: Colors.red),
-                      ),
-                    )
-                  : news.length,
-              itemBuilder: (_, int i) {
-                return Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Card(
-                        color: Colors.black54,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        // elevation: 2.0,
-                        child: ListTile(
-                          onTap: () {
-                            debugPrint("Hello");
-                          },
-                          title: Container(
-                            child: Stack(
-                              alignment: AlignmentDirectional(0, 1),
-                              // fit: StackFit.loose,
-                              // overflow: Overflow.visible,
-                              children: <Widget>[
-                                Image.network(
-                                  news[i]['urlToImage'] == null
-                                      ? Center(
-                                          child: CircularProgressIndicator(),
-                                        ).toString()
-                                      : news[i]['urlToImage'].toString(),
-                                  colorBlendMode: BlendMode.darken,
-                                  color: Colors.black38,
+            // Center(
+            //   child: CircularProgressIndicator(
+            //     backgroundColor: Theme.of(context).backgroundColor,
+            //     strokeWidth: 2.0,
+            //   ),
+            // ),
+            TabBarView(
+              children: <Widget>[
+                // Building list of trending news from news[] list
+                ListView.builder(
+                  itemCount: news == null
+                      ? Center(
+                          child: Text(
+                            "Loading!",
+                            style: TextStyle(color: Colors.red),
+                          ),
+                        )
+                      : news.length,
+                  itemBuilder: (_, int i) {
+                    return Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Card(
+                            color: Colors.black54,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            // elevation: 2.0,
+                            child: ListTile(
+                              onTap: () {
+                                debugPrint("Hello");
+                              },
+                              title: Container(
+                                child: Stack(
+                                  alignment: AlignmentDirectional(0, 1),
+                                  // fit: StackFit.loose,
+                                  // overflow: Overflow.visible,
+                                  children: <Widget>[
+                                    Image.network(
+                                      news[i]['urlToImage'] == null
+                                          ? Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ).toString()
+                                          : news[i]['urlToImage'].toString(),
+                                      colorBlendMode: BlendMode.darken,
+                                      color: Colors.black38,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Text(
+                                        news[i]['title'] == null
+                                            ? Text("Title here").toString()
+                                            : news[i]['title'].toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Text(
-                                    news[i]['title'] == null
-                                        ? Text("Title here").toString()
-                                        : news[i]['title'].toString(),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Text(""),
+                                    // child: IconButton(
+                                    //   color:
+                                    //       _active ? Colors.white : Colors.red[500],
+                                    //   icon: (_active
+                                    //       ? Icon(Icons.star_border)
+                                    //       : Icon(Icons.star)),
+                                    //   onPressed: () => _toggleActive(),
+                                    // ),
                                   ),
-                                ),
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5.0),
+                                    child: FlatButton(
+                                      splashColor: Colors.black,
+                                      // color: Colors.black54,
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        SavedArticles(
+                                                          articles: news[i] ==
+                                                                  null
+                                                              ? Text("Loading!")
+                                                              : news[i],
+                                                        )));
+                                      },
+                                      child: Text(
+                                        "Read More",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20.0,
+                                            letterSpacing: 0.8),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          subtitle: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                child: Text(""),
-                                // child: IconButton(
-                                //   color:
-                                //       _active ? Colors.white : Colors.red[500],
-                                //   icon: (_active
-                                //       ? Icon(Icons.star_border)
-                                //       : Icon(Icons.star)),
-                                //   onPressed: () => _toggleActive(),
-                                // ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
-                                child: FlatButton(
-                                  splashColor: Colors.black,
-                                  // color: Colors.black54,
-                                  onPressed: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                SavedArticles(
-                                                  articles: news[i] == null
-                                                      ? Text("Loading!")
-                                                      : news[i],
-                                                )));
-                                  },
-                                  child: Text(
-                                    "Read More",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20.0,
-                                        letterSpacing: 0.8),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
                         ),
-                      ),
-                    ),
-                    Container(),
-                  ],
-                );
-              },
-            ),
+                        Container(),
+                      ],
+                    );
+                  },
+                ),
 
-            // // Building list of all news from allnews[] list
-            ListView.builder(
-              itemCount: allnews == null ? "Loading" : allnews.length,
-              itemBuilder: (_, int i) {
-                return Column(
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Card(
-                        color: Colors.black54,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        // elevation: 2.0,
-                        child: ListTile(
-                          onTap: () {
-                            debugPrint("Hello");
-                          },
-                          title: Container(
-                            child: Stack(
-                              alignment: AlignmentDirectional(0, 1),
-                              // fit: StackFit.loose,
-                              // overflow: Overflow.visible,
-                              children: <Widget>[
-                                Image.network(
-                                  allnews[i]['urlToImage'] == null
-                                      ? Text("Image Here").toString()
-                                      : allnews[i]['urlToImage'].toString(),
-                                  colorBlendMode: BlendMode.darken,
-                                  color: Colors.black54,
+                // // Building list of all news from allnews[] list
+                ListView.builder(
+                  itemCount: allnews == null ? "Loading" : allnews.length,
+                  itemBuilder: (_, int i) {
+                    return Column(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Card(
+                            color: Colors.black54,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            // elevation: 2.0,
+                            child: ListTile(
+                              onTap: () {
+                                debugPrint("Hello");
+                              },
+                              title: Container(
+                                child: Stack(
+                                  alignment: AlignmentDirectional(0, 1),
+                                  // fit: StackFit.loose,
+                                  // overflow: Overflow.visible,
+                                  children: <Widget>[
+                                    Image.network(
+                                      allnews[i]['urlToImage'] == null
+                                          ? Text("Image Here").toString()
+                                          : allnews[i]['urlToImage'].toString(),
+                                      colorBlendMode: BlendMode.darken,
+                                      color: Colors.black54,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Text(
+                                        allnews[i]['title'].toString() == null
+                                            ? Text("Title of the Article here!")
+                                            : allnews[i]['title'].toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: Text(
-                                    allnews[i]['title'].toString() == null
-                                        ? Text("Title of the Article here!")
-                                        : allnews[i]['title'].toString(),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 18.0,
-                                        fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    // child: IconButton(
+                                    //   color:
+                                    //       _active ? Colors.white : Colors.red[500],
+                                    //   icon: (_active
+                                    //       ? Icon(Icons.star_border)
+                                    //       : Icon(Icons.star)),
+                                    //   onPressed: () => _toggleActive(),
+                                    // ),
                                   ),
-                                ),
-                              ],
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 5.0),
+                                    child: FlatButton(
+                                      // color: Colors.redAccent,
+                                      splashColor: Colors.grey,
+                                      onPressed: () {
+                                        // setState(() {
+                                        //   news.map((f) {
+                                        //     savedArticles.add(news[f]);
+                                        //   });
+                                        // });
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        SavedArticles(
+                                                          articles:
+                                                              allnews[i] == null
+                                                                  ? "Loading"
+                                                                  : allnews[i],
+                                                        )));
+                                      },
+                                      child: Text(
+                                        "Read More",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 20.0,
+                                            letterSpacing: 0.8),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
-                          subtitle: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              Padding(
-                                padding: const EdgeInsets.all(4.0),
-                                // child: IconButton(
-                                //   color:
-                                //       _active ? Colors.white : Colors.red[500],
-                                //   icon: (_active
-                                //       ? Icon(Icons.star_border)
-                                //       : Icon(Icons.star)),
-                                //   onPressed: () => _toggleActive(),
-                                // ),
-                              ),
-                              Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
-                                child: FlatButton(
-                                  // color: Colors.redAccent,
-                                  splashColor: Colors.grey,
-                                  onPressed: () {
-                                    // setState(() {
-                                    //   news.map((f) {
-                                    //     savedArticles.add(news[f]);
-                                    //   });
-                                    // });
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                SavedArticles(
-                                                  articles: allnews[i] == null
-                                                      ? "Loading"
-                                                      : allnews[i],
-                                                )));
-                                  },
-                                  child: Text(
-                                    "Read More",
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 20.0,
-                                        letterSpacing: 0.8),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
                         ),
-                      ),
-                    ),
-                    Container()
-                  ],
-                );
-              },
+                        Container()
+                      ],
+                    );
+                  },
+                ),
+              ],
             ),
           ],
         ),

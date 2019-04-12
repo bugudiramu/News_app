@@ -53,7 +53,9 @@ class _SavedArticlesState extends State<SavedArticles> {
                 padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 20.0),
                 child: Stack(
                   children: <Widget>[
-                    Image.asset('images/loading.gif',),
+                    Image.asset(
+                      'images/loading.gif',
+                    ),
                     Image.network(
                       widget.articles['urlToImage'] == null
                           ? 'Loading'
