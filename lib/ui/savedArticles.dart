@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'allnews.dart';
 import 'package:url_launcher/url_launcher.dart';
-// import 'dart:async';
+// import "package:intl/intl_browser.dart";
 
 class SavedArticles extends StatefulWidget {
   final articles;
@@ -16,7 +15,7 @@ class _SavedArticlesState extends State<SavedArticles> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Articles"),
+          title: Text("Article"),
           centerTitle: true,
         ),
         body: Container(
@@ -43,20 +42,26 @@ class _SavedArticlesState extends State<SavedArticles> {
                   children: <Widget>[
                     Text(
                         "${widget.articles['publishedAt'] == null ? 'Loading' : widget.articles['publishedAt'].toString()}"),
-                    Text("Share")
+                    IconButton(
+                      icon: Icon(Icons.share),
+                      onPressed: () => debugPrint("Share "),
+                    ),
                   ],
                 ),
               ),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 20.0),
-                child: Image.network(
-                  widget.articles['urlToImage'] == null
-                      ? Center(
-                          child: CircularProgressIndicator(),
-                        ).toString()
-                      : widget.articles['urlToImage'].toString(),
-                  filterQuality: FilterQuality.low,
-                  scale: 1.0,
+                child: Stack(
+                  children: <Widget>[
+                    Image.asset('images/loading.gif',),
+                    Image.network(
+                      widget.articles['urlToImage'] == null
+                          ? 'Loading'
+                          : widget.articles['urlToImage'].toString(),
+                      filterQuality: FilterQuality.low,
+                      scale: 1.0,
+                    ),
+                  ],
                 ),
                 alignment: Alignment.center,
               ),
@@ -64,14 +69,19 @@ class _SavedArticlesState extends State<SavedArticles> {
                 padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
                 child: Row(
                   children: <Widget>[
-                    Text("Posted by :"),
                     Text(
-                      "${widget.articles['author'] == null ? 'Ananymous Author' : widget.articles['author'].toString()}",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white70,
-                          fontSize: 18.0,
-                          letterSpacing: 0.4),
+                      "Posted by :",
+                      style: TextStyle(fontSize: 15.0),
+                    ),
+                    Expanded(
+                      child: Text(
+                        "${widget.articles['author'] == null ? 'Ananymous Author' : widget.articles['author'].toString()}",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white70,
+                            fontSize: 15.0,
+                            letterSpacing: 0.4),
+                      ),
                     )
                   ],
                 ),
@@ -81,7 +91,9 @@ class _SavedArticlesState extends State<SavedArticles> {
                       EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
                   child: Text(
                       "${widget.articles['description'] == null ? 'Description of Article' : widget.articles['description'].toString()}",
-                      style: TextStyle(fontSize: 16.0, color: Colors.white54))),
+                      style: TextStyle(
+                        fontSize: 16.0,
+                      ))),
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
                 child: Text(

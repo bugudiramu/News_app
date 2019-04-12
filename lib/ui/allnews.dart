@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'savedArticles.dart';
+import 'package:intl/intl.dart';
 
 class AllNews extends StatefulWidget {
   @override
@@ -16,6 +17,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
   List savedArticles = [];
   bool _themeSwitch = false;
 
+// Calling top headlines or trending from newsapi
   Future<String> getData() async {
     String url1 =
         "https://newsapi.org/v2/top-headlines?country=us&apiKey=31ca4832eab448daa762754f150bd3b8";
@@ -27,6 +29,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     });
     return "Success";
   }
+  // Calling all news from newsapi
 
   Future<String> getAllData() async {
     String url2 =
@@ -43,6 +46,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    // invoking both api calls when the app started to build
     this.getData();
     this.getAllData();
   }
@@ -103,12 +107,13 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
               ),
             ],
           ),
-          title: Text("News"),
+          title: Text("BuzzyFeed"),
           centerTitle: true,
           elevation: 0,
         ),
         body: TabBarView(
           children: <Widget>[
+            // Building list of trending news from news[] list
             ListView.builder(
               itemCount: news == null
                   ? Center(
@@ -169,6 +174,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                             children: <Widget>[
                               Padding(
                                 padding: const EdgeInsets.all(4.0),
+                                child: Text(""),
                                 // child: IconButton(
                                 //   color:
                                 //       _active ? Colors.white : Colors.red[500],
@@ -215,7 +221,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
               },
             ),
 
-            // All articles published by the WSJ and NY Times
+            // // Building list of all news from allnews[] list
             ListView.builder(
               itemCount: allnews == null ? "Loading" : allnews.length,
               itemBuilder: (_, int i) {

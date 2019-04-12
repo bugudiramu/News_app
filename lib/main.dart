@@ -5,12 +5,12 @@ import 'package:flutter/foundation.dart';
 void main() async {
   runApp(
     MaterialApp(
+      title: "BuzzyFeed",
       debugShowCheckedModeBanner: false,
       home: AllNews(),
       theme: defaultTargetPlatform == TargetPlatform.iOS
           ? ThemeData.light()
-          : ThemeData.dark(), // primaryColor: Colors.blue,
-      // primarySwatch: Colors.black,
+          : ThemeData.dark(),
     ),
   );
 }
