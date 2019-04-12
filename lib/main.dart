@@ -6,7 +6,7 @@ void main() async {
     debugShowCheckedModeBanner: false,
     home: AllNews(),
     theme: ThemeData(
-      // primaryColor: Colors.blue,
+platform: TargetPlatform.android,      // primaryColor: Colors.blue,
       // primarySwatch: Colors.black,
       brightness: Brightness.dark
     ),
