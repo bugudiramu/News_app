@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'savedArticles.dart';
-// import 'package:intl/intl.dart';
 
 class AllNews extends StatefulWidget {
   @override
@@ -15,7 +14,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
   List allnews = [];
   // bool _active = true;
   List savedArticles = [];
-  bool _themeSwitch = false;
+  bool invertTheme = false;
 
 // Calling top headlines or trending from newsapi
   Future<String> getData() async {
@@ -75,20 +74,22 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                   ),
                 ),
               ),
-              ListTile(
-                title: Container(
-                  child: Text("Dark Theme"),
-                ),
-                trailing: Switch(
-                  value: _themeSwitch,
-                  onChanged: (val) {
-                    setState(() {
-                      _themeSwitch = val;
-                    });
-                    _toggleTheme();
-                  },
-                ),
-              ),
+
+              // For Dark Theme
+              // ListTile(
+              //   title: Container(
+              //     child: Text("Dark Theme"),
+              //   ),
+              //   trailing: Switch(
+              //     value: invertTheme,
+              //     onChanged: (val) {
+              //       setState(() {
+              //         invertTheme = val;
+              //       });
+              //       _toggleTheme();
+              //     },
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -116,12 +117,6 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
         //       ),
         body: Stack(
           children: <Widget>[
-            // Center(
-            //   child: CircularProgressIndicator(
-            //     backgroundColor: Theme.of(context).backgroundColor,
-            //     strokeWidth: 2.0,
-            //   ),
-            // ),
             TabBarView(
               children: <Widget>[
                 // Building list of trending news from news[] list
@@ -187,14 +182,6 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
                                     child: Text(""),
-                                    // child: IconButton(
-                                    //   color:
-                                    //       _active ? Colors.white : Colors.red[500],
-                                    //   icon: (_active
-                                    //       ? Icon(Icons.star_border)
-                                    //       : Icon(Icons.star)),
-                                    //   onPressed: () => _toggleActive(),
-                                    // ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -204,16 +191,16 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                       // color: Colors.black54,
                                       onPressed: () {
                                         Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        SavedArticles(
-                                                          articles: news[i] ==
-                                                                  null
-                                                              ? Text("Loading!")
-                                                              : news[i],
-                                                        )));
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                SavedArticles(
+                                                  articles: news[i] == null
+                                                      ? Text("Loading!")
+                                                      : news[i],
+                                                ),
+                                          ),
+                                        );
                                       },
                                       child: Text(
                                         "Read More",
@@ -287,14 +274,6 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                 children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.all(4.0),
-                                    // child: IconButton(
-                                    //   color:
-                                    //       _active ? Colors.white : Colors.red[500],
-                                    //   icon: (_active
-                                    //       ? Icon(Icons.star_border)
-                                    //       : Icon(Icons.star)),
-                                    //   onPressed: () => _toggleActive(),
-                                    // ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
@@ -309,16 +288,16 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                         //   });
                                         // });
                                         Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder:
-                                                    (BuildContext context) =>
-                                                        SavedArticles(
-                                                          articles:
-                                                              allnews[i] == null
-                                                                  ? "Loading"
-                                                                  : allnews[i],
-                                                        )));
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                SavedArticles(
+                                                  articles: allnews[i] == null
+                                                      ? "Loading"
+                                                      : allnews[i],
+                                                ),
+                                          ),
+                                        );
                                       },
                                       child: Text(
                                         "Read More",
@@ -357,9 +336,9 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
   //   });
   // }
 
-  _toggleTheme() {
-    return ThemeData(
-      brightness: Brightness.light,
-    );
-  }
+  // _toggleTheme() {
+  //   return ThemeData(
+  //     brightness: Brightness.light,
+  //   );
+  // }
 }

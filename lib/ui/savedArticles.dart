@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
-// import "package:intl/intl_browser.dart";
 
 class SavedArticles extends StatefulWidget {
   final articles;
@@ -36,26 +35,15 @@ class _SavedArticlesState extends State<SavedArticles> {
                 padding: EdgeInsets.only(bottom: 10.0),
               ),
               Container(
-                margin: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                        "${widget.articles['publishedAt'] == null ? 'Loading' : widget.articles['publishedAt'].toString()}"),
-                    IconButton(
-                      icon: Icon(Icons.share),
-                      onPressed: () => debugPrint("Share "),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
                 padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 20.0),
                 child: Stack(
                   children: <Widget>[
-                    Image.asset(
-                      'images/loading.gif',
-                    ),
+                    // Image.asset(
+                    //   'images/loading.gif',
+                    // ),
+                    Container(
+                        margin: EdgeInsets.symmetric(vertical: 10.0),
+                        child: Center(child: CircularProgressIndicator())),
                     Image.network(
                       widget.articles['urlToImage'] == null
                           ? 'Loading'
