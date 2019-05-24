@@ -15,6 +15,8 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
   // bool _active = true;
   List savedArticles = [];
   bool invertTheme = false;
+  int counter = 0;
+  bool _isLiked = false;
 
 // Calling top headlines or trending from newsapi
   Future<String> getData() async {
@@ -177,39 +179,55 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                 ),
                               ),
                               subtitle: Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.all(4.0),
-                                    child: Text(""),
+                                  IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        _isLiked = true;
+                                        counter = counter + 1;
+
+                                        print(counter);
+                                      });
+                                    },
+                                    icon: Icon(Icons.thumb_up),
+                                    color: _isLiked == false ? Colors.grey : Colors.blue,
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 5.0),
-                                    child: FlatButton(
-                                      splashColor: Colors.black,
-                                      // color: Colors.black54,
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (BuildContext context) =>
-                                                SavedArticles(
-                                                  articles: news[i] == null
-                                                      ? Text("Loading!")
-                                                      : news[i],
-                                                ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: <Widget>[
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 5.0),
+                                        child: FlatButton(
+                                          splashColor: Colors.black,
+                                          // color: Colors.black54,
+                                          onPressed: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder:
+                                                    (BuildContext context) =>
+                                                        SavedArticles(
+                                                          articles: news[i] ==
+                                                                  null
+                                                              ? Text("Loading!")
+                                                              : news[i],
+                                                        ),
+                                              ),
+                                            );
+                                          },
+                                          child: Text(
+                                            "Read More",
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 20.0,
+                                                letterSpacing: 0.8),
                                           ),
-                                        );
-                                      },
-                                      child: Text(
-                                        "Read More",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20.0,
-                                            letterSpacing: 0.8),
+                                        ),
                                       ),
-                                    ),
+                                    ],
                                   ),
                                 ],
                               ),
