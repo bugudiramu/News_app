@@ -1,4 +1,4 @@
-# news_app --> Still Under Construction
+# news_app --> Under Construction
 
 A new Flutter project.
 
