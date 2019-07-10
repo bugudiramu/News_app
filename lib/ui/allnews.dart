@@ -77,24 +77,6 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                 ),
               ),
 
-              // For Dark Theme
-              // ListTile(
-              //   title: Container(
-              //     child: Text("Dark Theme"),
-              //   ),
-              //   trailing: Switch(
-              //     value: invertTheme,
-              //     onChanged: (val) {
-              //       setState(() {
-              //         invertTheme = val;
-              //       });
-              //       _toggleTheme();
-              //     },
-              //   ),
-              // ),
-            ],
-          ),
-        ),
         appBar: AppBar(
           bottom: TabBar(
             tabs: <Widget>[
@@ -114,9 +96,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
           centerTitle: true,
           elevation: 0,
         ),
-        //  Stack(
-        //         children: <Widget>[],
-        //       ),
+        
         body: Stack(
           children: <Widget>[
             TabBarView(
@@ -182,18 +162,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        _isLiked = true;
-                                        counter = counter + 1;
-
-                                        print(counter);
-                                      });
-                                    },
-                                    icon: Icon(Icons.thumb_up),
-                                    color: _isLiked == false ? Colors.grey : Colors.blue,
-                                  ),
+                              
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.end,
                                     children: <Widget>[
@@ -343,20 +312,4 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
-  // void _toggleActive() {
-  //   setState(() {
-  //     if (_active) {
-  //       _active = false;
-  //     } else {
-  //       _active = true;
-  //     }
-  //   });
-  // }
-
-  // _toggleTheme() {
-  //   return ThemeData(
-  //     brightness: Brightness.light,
-  //   );
-  // }
 }
