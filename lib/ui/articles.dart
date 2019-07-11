@@ -14,6 +14,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
   List allnews = [];
   List savedArticles = [];
   int counter = 0;
+  // bool _darkmode = false;
 
 // Calling top headlines or trending from newsapi
   Future<String> getData() async {
@@ -51,7 +52,10 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
+    return
+        // For DarkMode
+        // theme: _darkmode ? ThemeData.dark() : ThemeData.light(),
+        DefaultTabController(
       initialIndex: 0,
       length: 2,
       child: Scaffold(
@@ -64,13 +68,24 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                 accountName: Text("Ramu"),
                 accountEmail: Text("ramubugudi4@gmail.com"),
                 currentAccountPicture: CircleAvatar(
-                  // backgroundColor: Colors.blueAccent,
                   child: Text(
                     "R",
                     style: TextStyle(fontSize: 40.0),
                   ),
                 ),
               ),
+              // Dark Mode
+              // ListTile(
+              //   title: Text("DarkMode"),
+              //   trailing: Switch(
+              //     value: _darkmode,
+              //     onChanged: (val) {
+              //       setState(() {
+              //         _darkmode = val;
+              //       });
+              //     },
+              //   ),
+              // ),
             ],
           ),
         ),
@@ -131,12 +146,13 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                     Hero(
                                       tag: news[i]['title'],
                                       child: FadeInImage.assetNetwork(
-                                          placeholder: 'images/loading.gif',
-                                          image: news[i]['urlToImage'] == null
-                                              ? Image.asset(
-                                                      'images/loading.gif')
-                                                  .toString()
-                                              : news[i]['urlToImage']),
+                                        placeholder: 'images/loading.gif',
+                                        image: news[i]['urlToImage'] == null
+                                            ? Image.asset(
+                                                    'images/imgPlaceholder.png')
+                                                .toString()
+                                            : news[i]['urlToImage'],
+                                      ),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(5.0),
@@ -147,7 +163,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             color: Colors.white,
-                                            fontSize: 18.0,
+                                            fontSize: 16.0,
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
@@ -159,7 +175,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                 children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 5.0),
+                                        vertical: 2.0),
                                     child: FlatButton(
                                       splashColor: Colors.black,
                                       // color: Colors.black54,
@@ -181,7 +197,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white,
-                                            fontSize: 20.0,
+                                            fontSize: 18.0,
                                             letterSpacing: 0.8),
                                       ),
                                     ),
@@ -222,12 +238,12 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                       tag: allnews[i]['title'],
                                       child: FadeInImage.assetNetwork(
                                           placeholder: 'images/loading.gif',
-                                          image:
-                                              allnews[i]['urlToImage'] == null
-                                                  ? Image.asset(
-                                                          'images/loading.gif')
-                                                      .toString()
-                                                  : allnews[i]['urlToImage']),
+                                          image: allnews[i]['urlToImage'] ==
+                                                  null
+                                              ? Image.asset(
+                                                      'images/imgPlaceholder.png')
+                                                  .toString()
+                                              : allnews[i]['urlToImage']),
                                     ),
                                     Padding(
                                       padding: const EdgeInsets.all(5.0),
@@ -250,7 +266,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                 children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.symmetric(
-                                        vertical: 5.0),
+                                        vertical: 2.0),
                                     child: FlatButton(
                                       splashColor: Colors.black,
                                       // color: Colors.black54,
@@ -270,10 +286,10 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                       child: Text(
                                         "Read More",
                                         style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
-                                            fontSize: 20.0,
-                                            letterSpacing: 0.8),
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 18.0,
+                                        ),
                                       ),
                                     ),
                                   ),

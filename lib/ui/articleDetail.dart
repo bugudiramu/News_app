@@ -50,7 +50,8 @@ class _ArticleDetailState extends State<ArticleDetail> {
                         width: MediaQuery.of(context).size.width,
                         placeholder: 'images/loading.gif',
                         image: widget.articles['urlToImage'] == null
-                            ? Image.asset('images/loading.gif').toString()
+                            ? Image.asset('images/imgPlaceholder.png')
+                                .toString()
                             : widget.articles['urlToImage']),
                   ),
                 ],
@@ -68,11 +69,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
                   Expanded(
                     child: Text(
                       "${widget.articles['author'] == null ? 'Ananymous Author' : widget.articles['author'].toString()}",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white70,
-                          fontSize: 15.0,
-                          letterSpacing: 0.4),
+                      style: Theme.of(context).textTheme.subhead,
                     ),
                   )
                 ],
