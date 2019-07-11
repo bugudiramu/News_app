@@ -1,9 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
-import 'package:news_app/ui/login.dart';
+import 'package:news_app/articleDetail.dart';
 import 'dart:convert';
-import 'articleDetail.dart';
+
+import 'package:news_app/screens/login.dart';
 
 class AllNews extends StatefulWidget {
   @override
@@ -15,6 +17,8 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
   List allnews = [];
   List savedArticles = [];
   int counter = 0;
+  FirebaseUser currentUser;
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   // bool _darkmode = false;
 
 // Calling top headlines or trending from newsapi
@@ -49,6 +53,39 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     // invoking both api calls when the app started to build
     this.getData();
     this.getAllData();
+    _loadCurrentUser();
+  }
+
+  void _loadCurrentUser() async {
+    firebaseAuth.currentUser().then((FirebaseUser user) {
+      setState(() {
+        this.currentUser = user;
+      });
+    });
+  }
+
+  String username() {
+    if (currentUser != null) {
+      return currentUser.displayName;
+    } else {
+      return "no user name";
+    }
+  }
+
+  String email() {
+    if (currentUser != null) {
+      return currentUser.email;
+    } else {
+      return "no email";
+    }
+  }
+
+  String photoUrl() {
+    if (currentUser != null) {
+      return currentUser.photoUrl;
+    } else {
+      return "no photo";
+    }
   }
 
   @override
@@ -66,14 +103,14 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
             children: <Widget>[
               UserAccountsDrawerHeader(
                 decoration: BoxDecoration(color: Colors.blueGrey),
-                accountName: Text("Ramu"),
-                accountEmail: Text("ramubugudi4@gmail.com"),
+                accountName: Text("${username()}"),
+                accountEmail: Text("${email()}"),
                 currentAccountPicture: CircleAvatar(
-                  child: Text(
-                    "R",
-                    style: TextStyle(fontSize: 40.0),
-                  ),
-                ),
+                    backgroundColor: Colors.blueGrey,
+                    child: FadeInImage.assetNetwork(
+                      image: photoUrl(),
+                      placeholder: "images/icon/launcherIcon.png",
+                    )),
               ),
               // Dark Mode
               // ListTile(
@@ -95,8 +132,11 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
             IconButton(
               icon: Icon(Icons.home),
               onPressed: () {
-                Navigator.of(context).pushReplacement(
-                    MaterialPageRoute(builder: (context) => Login()));
+                firebaseAuth.signOut().then((user) {
+                  Navigator.of(context).pop();
+                  Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(builder: (context) => Login()));
+                });
               },
             ),
           ],
