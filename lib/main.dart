@@ -6,6 +6,7 @@ void main() async {
     MaterialApp(
       home: AllNews(),
       debugShowCheckedModeBanner: false,
+      title: "Buzzyfeed",
       theme: ThemeData(fontFamily: "Montserrat"),
     ),
   );

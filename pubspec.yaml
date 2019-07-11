@@ -26,6 +26,15 @@ dependencies:
   http: ^0.12.0+1
   intl: ^0.15.8
   url_launcher: ^5.0.2
+  flutter_launcher_icons: "^0.6.1"
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "images/icon/launcherIcon.png"
+
+dependency_overrides:
+  image: 2.0.7
 
 dev_dependencies:
   flutter_test:
@@ -40,6 +49,7 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
   # To add assets to your application, add an assets section, like this:
   assets:
     - images/loading.gif
