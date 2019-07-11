@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:http/http.dart' as http;
+import 'package:news_app/ui/login.dart';
 import 'dart:convert';
 import 'articleDetail.dart';
 
@@ -90,6 +91,15 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
           ),
         ),
         appBar: AppBar(
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.home),
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => Login()));
+              },
+            ),
+          ],
           backgroundColor: Colors.blueGrey,
           bottom: TabBar(
             indicatorColor: Colors.white,
