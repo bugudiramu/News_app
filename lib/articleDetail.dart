@@ -50,7 +50,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
                         width: MediaQuery.of(context).size.width,
                         placeholder: 'images/loading.gif',
                         image: widget.articles['urlToImage'] == null
-                            ? Image.asset('images/imgPlaceholder.png')
+                            ? AssetImage('images/imgPlaceholder.png')
                                 .toString()
                             : widget.articles['urlToImage']),
                   ),

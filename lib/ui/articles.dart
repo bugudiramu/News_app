@@ -198,7 +198,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                       child: FadeInImage.assetNetwork(
                                         placeholder: 'images/loading.gif',
                                         image: news[i]['urlToImage'] == null
-                                            ? Image.asset(
+                                            ? AssetImage(
                                                     'images/imgPlaceholder.png')
                                                 .toString()
                                             : news[i]['urlToImage'],
@@ -290,7 +290,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                           placeholder: 'images/loading.gif',
                                           image: allnews[i]['urlToImage'] ==
                                                   null
-                                              ? Image.asset(
+                                              ? AssetImage(
                                                       'images/imgPlaceholder.png')
                                                   .toString()
                                               : allnews[i]['urlToImage']),

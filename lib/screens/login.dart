@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:news_app/firebaseDb/googleSignIn.dart';
 import 'package:news_app/services/usermanagement.dart';
 import 'package:news_app/ui/articles.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -17,11 +18,14 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   UserManagement userManagement = UserManagement();
   FirebaseUser currentUser;
+  SharedPreferences preferences;
+
+  // bool loading = false;
+  bool isLogedin = false;
 
   @override
   void initState() {
     super.initState();
-
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 1800),
@@ -32,12 +36,26 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
       setState(() {});
     });
     _controller.forward();
+    // Checking if the user is already signedin or not if signed in then directly return him to homescreen else he/she will be authenticated(should be signin first)
+    this.isSignedIn();
   }
 
   @override
   void dispose() {
     super.dispose();
     _controller.dispose();
+  }
+
+  void isSignedIn() async {
+    await firebaseAuth.currentUser().then((user) {
+      if (user != null) {
+        setState(() => isLogedin = true);
+      }
+    });
+    if (isLogedin) {
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (context) => AllNews()));
+    }
   }
 
   @override
@@ -111,6 +129,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                       );
                     });
                 FirebaseUser user = await _auth.googleSignIn();
+
                 if (user != null) {
                   userManagement.createUser(user.uid.toString(), {
                     "userName": user.displayName,
@@ -118,6 +137,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                     "photoUrl": user.photoUrl,
                     "userId": user.uid,
                   });
+                  Navigator.of(context)
+                      .push(MaterialPageRoute(builder: (context) => AllNews()));
+                } else if (currentUser != null) {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) => AllNews()));
                 }

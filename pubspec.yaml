@@ -33,6 +33,7 @@ dependencies:
   google_sign_in: ^4.0.2
   # cloud_firestore: ^0.12.5
   firebase_database:
+  shared_preferences: ^0.4.3
 
 flutter_icons:
   android: "launcher_icon"
