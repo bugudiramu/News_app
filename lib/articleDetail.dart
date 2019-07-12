@@ -50,8 +50,9 @@ class _ArticleDetailState extends State<ArticleDetail> {
                         width: MediaQuery.of(context).size.width,
                         placeholder: 'images/loading.gif',
                         image: widget.articles['urlToImage'] == null
-                            ? AssetImage('images/imgPlaceholder.png')
-                                .toString()
+                            ? Image.asset(
+                                'images/imgPlaceholder.png',
+                              ).toString().toString()
                             : widget.articles['urlToImage']),
                   ),
                 ],
@@ -91,11 +92,13 @@ class _ArticleDetailState extends State<ArticleDetail> {
                 padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
                 child: Row(
                   children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Text(
-                        "For More Info Visit following URL :",
-                        style: Theme.of(context).textTheme.caption,
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Text(
+                          "For More Info Visit following URL :",
+                          style: Theme.of(context).textTheme.caption,
+                        ),
                       ),
                     ),
                     InkWell(
