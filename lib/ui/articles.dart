@@ -4,7 +4,6 @@ import 'dart:async';
 import 'package:http/http.dart' as http;
 import 'package:news_app/articleDetail.dart';
 import 'dart:convert';
-// import 'package:connectivity/connectivity.dart';
 
 import 'package:news_app/screens/login.dart';
 
@@ -16,19 +15,16 @@ class AllNews extends StatefulWidget {
 class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
   List news = [];
   List allnews = [];
-  List savedArticles = [];
-  int counter = 0;
   FirebaseUser currentUser;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
-  // Swipe to refresh
+  // **** Swipe to refresh ****
   final GlobalKey<RefreshIndicatorState> _refreshKey1 =
       GlobalKey<RefreshIndicatorState>();
   final GlobalKey<RefreshIndicatorState> _refreshKey2 =
       GlobalKey<RefreshIndicatorState>();
-  // bool _darkmode = false;
 
-// Calling top headlines or trending from newsapi
+// **** Calling top headlines or trending from newsapi ****
   Future<String> getData() async {
     String url1 =
         "https://newsapi.org/v2/top-headlines?country=us&apiKey=31ca4832eab448daa762754f150bd3b8";
@@ -40,7 +36,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     });
     return "Success";
   }
-  // Calling all news from newsapi
+  // **** Calling allnews from newsapi ****
 
   Future<String> getAllData() async {
     String url2 =
@@ -57,12 +53,13 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    // invoking both api calls when the app started to build
+    // **** invoking both api calls when the app started to build ****
     this.getData();
     this.getAllData();
+    // **** Loading current user details ****
     _loadCurrentUser();
-    // **** Refresh automatically when the app launches ****.
 
+    // **** Refresh automatically when the app launches ****.
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   _refreshKey1.currentState.show();
     // });
@@ -72,6 +69,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
   }
 
   void _loadCurrentUser() async {
+    // Setting the current user details to currentuser object
     firebaseAuth.currentUser().then((FirebaseUser user) {
       setState(() {
         this.currentUser = user;
@@ -83,7 +81,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     if (currentUser != null) {
       return currentUser.displayName;
     } else {
-      return "no user name";
+      return "Guest User";
     }
   }
 
@@ -91,7 +89,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     if (currentUser != null) {
       return currentUser.email;
     } else {
-      return "no email";
+      return "guestuser@gmail.com";
     }
   }
 
@@ -99,25 +97,23 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     if (currentUser != null) {
       return currentUser.photoUrl;
     } else {
-      return "no photo";
+      return "G";
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return
-        // For DarkMode
-        // theme: _darkmode ? ThemeData.dark() : ThemeData.light(),
-        DefaultTabController(
+    // **** Default Tab controller ****
+    return DefaultTabController(
       initialIndex: 0,
       length: 2,
       child: Scaffold(
         drawer: Drawer(
-          elevation: 1.7,
           child: ListView(
             children: <Widget>[
               UserAccountsDrawerHeader(
                 decoration: BoxDecoration(color: Colors.blueGrey),
+                // **** calling username() funtion and others aswell ****
                 accountName: Text("${username()}"),
                 accountEmail: Text("${email()}"),
                 currentAccountPicture: CircleAvatar(
@@ -127,47 +123,42 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                       placeholder: "images/icon/launcherIcon.png",
                     )),
               ),
-              // Dark Mode
-              // ListTile(
-              //   title: Text("DarkMode"),
-              //   trailing: Switch(
-              //     value: _darkmode,
-              //     onChanged: (val) {
-              //       setState(() {
-              //         _darkmode = val;
-              //       });
-              //     },
-              //   ),
-              // ),
+              InkWell(
+                onTap: () async {
+                  // **** Signing out the user popping the screen and navigate the user to login page ****
+                  await firebaseAuth.signOut().then((user) {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pushReplacement(
+                        MaterialPageRoute(builder: (context) => Login()));
+                  });
+                },
+                child: ListTile(
+                  leading: Image.asset(
+                    "images/logout.png",
+                    height: 20.0,
+                  ),
+                  title: Text(
+                    "LogOut",
+                    style: Theme.of(context).textTheme.subhead,
+                  ),
+                ),
+              ),
             ],
           ),
         ),
         appBar: AppBar(
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.home),
-              onPressed: () {
-                firebaseAuth.signOut().then((user) {
-                  Navigator.of(context).pop();
-                  Navigator.of(context).pushReplacement(
-                      MaterialPageRoute(builder: (context) => Login()));
-                });
-              },
-            ),
-            // Refresh
-            // new IconButton(
-            //     icon: const Icon(Icons.refresh),
-            //     tooltip: 'Refresh',
-            //     onPressed: () {
-            //       _refreshKey1.currentState.show();
-            //       _refreshKey2.currentState.show();
-            //     }),
-          ],
+          title: Text("BuzzyFeed"),
+          centerTitle: true,
+          elevation: 0,
           backgroundColor: Colors.blueGrey,
+          // **** Tabbar in appbar ****
           bottom: TabBar(
-            indicatorColor: Colors.white,
+            indicatorColor: Colors.white70,
             indicatorPadding: const EdgeInsets.all(2.0),
+            // **** The size of the indicator is same as the size of the text ****
             indicatorSize: TabBarIndicatorSize.label,
+            indicatorWeight: 5.0,
+
             tabs: <Widget>[
               Tab(
                 child: Container(
@@ -181,21 +172,21 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
               ),
             ],
           ),
-          title: Text("BuzzyFeed"),
-          centerTitle: true,
-          elevation: 0,
         ),
         body: Stack(
           children: <Widget>[
+            // **** Showing loading Indicator ****
             Center(
               child: CircularProgressIndicator(
                 backgroundColor: Colors.white,
                 strokeWidth: 2.5,
               ),
             ),
+            // **** Building TabBarView for showing the news in the body ****
             TabBarView(
               children: <Widget>[
-                // Building list of trending news from news[] list
+                // **** Building list of trending news from news[] list ****
+                // **** RefreshIndicator is used to implement the functionality of Swipe down to refresh it requires a GlobalKey and onRefresh callback ****
                 RefreshIndicator(
                   key: _refreshKey1,
                   onRefresh: _refresh1,
@@ -213,14 +204,17 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                               ),
                               child: ListTile(
                                 onTap: () {
-                                  debugPrint("Hello");
+                                  debugPrint("ListTile tapped!");
                                 },
                                 title: Container(
                                   child: Stack(
+                                    // ****  AlignmentDirectional is used to place the text whereever we wanted on the image
                                     alignment: AlignmentDirectional(0, 1),
                                     children: <Widget>[
+                                      // **** Hero animation ****
                                       Hero(
                                         tag: news[i]['title'],
+                                        // **** FadeinImage is used to get more UX ****
                                         child: FadeInImage.assetNetwork(
                                           placeholder: 'images/loading.gif',
                                           image: news[i]['urlToImage'] == null
@@ -253,9 +247,9 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 2.0),
                                       child: FlatButton(
-                                        splashColor: Colors.black,
-                                        // color: Colors.black54,
+                                        splashColor: Colors.grey,
                                         onPressed: () {
+                                          // **** Navigate the user to articleDetail page when the button is pressed along with passing the data by using constructor methods.
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
@@ -317,13 +311,14 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                       Hero(
                                         tag: allnews[i]['title'],
                                         child: FadeInImage.assetNetwork(
-                                            placeholder: 'images/loading.gif',
-                                            image:
-                                                allnews[i]['urlToImage'] == null
-                                                    ? Image.asset(
-                                                        'images/imgPlaceholder.png',
-                                                      ).toString()
-                                                    : allnews[i]['urlToImage']),
+                                          placeholder: 'images/loading.gif',
+                                          image:
+                                              allnews[i]['urlToImage'] == null
+                                                  ? Image.asset(
+                                                      'images/imgPlaceholder.png',
+                                                    ).toString()
+                                                  : allnews[i]['urlToImage'],
+                                        ),
                                       ),
                                       Padding(
                                         padding: const EdgeInsets.all(5.0),
@@ -392,17 +387,21 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     );
   }
 
+// **** calling the refresh callback when swipe down ****
   Future _refresh1() async {
     print("Refrshing");
-    return getData().then((data) {
+    // **** from getData() function then refresh it *****
+    await getData().then((data) {
       setState(() {
         news = data as List;
       });
     });
   }
 
-  Future _refresh2() {
-    return getAllData().then((data) {
+  Future _refresh2() async {
+    print("Refrshing");
+    // **** from getData() function then refresh it *****
+    await getAllData().then((data) {
       setState(() {
         allnews = data as List;
       });

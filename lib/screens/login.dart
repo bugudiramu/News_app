@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:news_app/firebaseDb/googleSignIn.dart';
+import 'package:news_app/screens/no_internet.dart';
 import 'package:news_app/services/usermanagement.dart';
 import 'package:news_app/ui/articles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,10 +16,12 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   Animation _animation;
   AnimationController _controller;
   Tween _tween;
+  // **** Auth class from googleSignIn.dart ****
   Auth _auth = Auth();
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   UserManagement userManagement = UserManagement();
   FirebaseUser currentUser;
+  // **** SharedPreferences is used to store local data that when the user wants to launch the app again it won't show splash screen or starter notes again. ****
   SharedPreferences preferences;
 
   // bool loading = false;
@@ -27,12 +30,14 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    // **** Check whether the device is connected to any network or not ****
     _checkConnectivity();
     _controller = AnimationController(
       vsync: this,
-      duration: Duration(milliseconds: 1800),
+      duration: Duration(milliseconds: 1500),
     );
     _tween = Tween<double>(begin: 0.0, end: 100.0);
+
     _animation = _tween.animate(_controller);
     _animation.addListener(() {
       setState(() {});
@@ -44,17 +49,19 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
+    // **** Cancelling all the resources of animation ****
     _controller.dispose();
-
     super.dispose();
   }
 
   void isSignedIn() async {
+    // **** check if user is already logged in or not if yes the set isLogedin value to true.
     await firebaseAuth.currentUser().then((user) {
       if (user != null) {
         setState(() => isLogedin = true);
       }
     });
+    // **** if isLogedin is true then return the user to our Homescreen ****
     if (isLogedin) {
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (context) => AllNews()));
@@ -65,6 +72,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        // **** Beautiful gradient background ****
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -82,10 +90,9 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             ),
             Image.asset(
               "images/icon/launcherIcon.png",
+              // **** Resizing the image as per the animation value ****
               height: _animation.value,
               width: _animation.value,
-              // height: 100.0,
-              // width: 80.0,
             ),
             Container(
               padding:
@@ -94,6 +101,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                 "Welcome to BuzzyFeed.From now I hope you will never miss any update.",
                 style: TextStyle(
                   color: Colors.white,
+                  // **** fontSize: 100 - 84 = 16 ****
                   fontSize: _animation.value - 84,
                 ),
               ),
@@ -103,17 +111,20 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             ),
             MaterialButton(
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50.0)),
+                borderRadius: BorderRadius.circular(50.0),
+              ),
               color: Colors.purpleAccent,
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20.0, vertical: 15.0),
                 child: Text(
                   "Sign In With Google",
-                  style: TextStyle(color: Colors.white, fontSize: 22.0),
+                  style: TextStyle(
+                      color: Colors.white, fontSize: _animation.value - 78),
                 ),
               ),
               onPressed: () async {
+                // **** Show Loading Indicator when button is pressed ****
                 showDialog(
                     context: context,
                     barrierDismissible: false,
@@ -130,21 +141,20 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                         ),
                       );
                     });
+                // **** We are checkng whether googleUser is empty or not if not empty then send Email Verification and show the dialog ****
                 FirebaseUser user = await _auth.googleSignIn();
 
                 if (user != null) {
                   user.sendEmailVerification().then((val) {
                     _showCofirmDialog();
                   });
+                  // **** Create the user in Firebase Realtime Database by using UserManagemet class ****
                   userManagement.createUser(user.uid.toString(), {
                     "userName": user.displayName,
                     "email": user.email,
                     "photoUrl": user.photoUrl,
                     "userId": user.uid,
                   });
-                  Navigator.of(context)
-                      .push(MaterialPageRoute(builder: (context) => AllNews()));
-                } else if (currentUser != null) {
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) => AllNews()));
                 }
@@ -157,55 +167,21 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
   }
 
   Future _checkConnectivity() async {
+    // **** Check the connectivity ****
     var result = await Connectivity().checkConnectivity();
     if (result == ConnectivityResult.none) {
-      _showDialog("No Internet",
-          "You are offline.Please check your internet connection.");
+      Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => NoInternet()));
     }
-    // } else if (result == ConnectivityResult.mobile) {
-    //   _showDialog("Internet access", "You're connected over mobile data");
-    // } else if (result == ConnectivityResult.wifi) {
-    //   _showDialog('Internet access', "You're connected over wifi");
+    //  else if (result == ConnectivityResult.mobile ||
+    //     result == ConnectivityResult.wifi) {
+    //   return Navigator.of(context)
+    //       .pushReplacement(MaterialPageRoute(builder: (context) => AllNews()));
     // }
   }
 
-  _showDialog(title, text) {
-    showDialog(
-      barrierDismissible: false,
-      context: context,
-      builder: (context) {
-        return Card(
-          child: AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            title: ListTile(
-              title: Text(
-                title,
-                style: Theme.of(context).textTheme.headline,
-              ),
-              leading: Icon(
-                Icons.signal_cellular_connected_no_internet_4_bar,
-                size: 30.0,
-                color: Colors.red,
-              ),
-            ),
-            content: Text(text),
-            actions: <Widget>[
-              FlatButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
-            ],
-          ),
-        );
-      },
-    );
-  }
-
   _showCofirmDialog() {
+    // **** Showing confirmation dialog ****
     showDialog(
       context: context,
       builder: (context) {
@@ -224,3 +200,20 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     );
   }
 }
+
+// Dark Mode
+  // bool _darkmode = false;
+
+  // theme: _darkmode ? ThemeData.dark() : ThemeData.light(),
+
+  // ListTile(
+  //   title: Text("DarkMode"),
+  //   trailing: Switch(
+  //     value: _darkmode,
+  //     onChanged: (val) {
+  //       setState(() {
+  //         _darkmode = val;
+  //       });
+  //     },
+  //   ),
+  // ),

@@ -22,7 +22,6 @@ class _ArticleDetailState extends State<ArticleDetail> {
         backgroundColor: Colors.blueGrey,
       ),
       body: Container(
-        margin: EdgeInsets.all(0.0),
         padding: EdgeInsets.only(top: 20.0),
         alignment: Alignment.center,
         child: ListView(
@@ -38,26 +37,27 @@ class _ArticleDetailState extends State<ArticleDetail> {
               padding: EdgeInsets.only(bottom: 10.0),
             ),
             Container(
+              alignment: Alignment.center,
               padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
               child: Stack(
                 children: <Widget>[
                   Hero(
                     tag: widget.articles['title'],
                     child: FadeInImage.assetNetwork(
-                        alignment: Alignment.center,
-                        fit: BoxFit.cover,
-                        height: 280.0,
-                        width: MediaQuery.of(context).size.width,
-                        placeholder: 'images/loading.gif',
-                        image: widget.articles['urlToImage'] == null
-                            ? Image.asset(
-                                'images/imgPlaceholder.png',
-                              ).toString().toString()
-                            : widget.articles['urlToImage']),
+                      alignment: Alignment.center,
+                      fit: BoxFit.cover,
+                      height: 280.0,
+                      width: MediaQuery.of(context).size.width,
+                      placeholder: 'images/loading.gif',
+                      image: widget.articles['urlToImage'] == null
+                          ? Image.asset(
+                              'images/imgPlaceholder.png',
+                            ).toString().toString()
+                          : widget.articles['urlToImage'],
+                    ),
                   ),
                 ],
               ),
-              alignment: Alignment.center,
             ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
@@ -77,10 +77,11 @@ class _ArticleDetailState extends State<ArticleDetail> {
               ),
             ),
             Container(
-                padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
-                child: Text(
-                    "${widget.articles['description'] == null ? 'Description of Article' : widget.articles['description']}",
-                    style: Theme.of(context).textTheme.subhead)),
+              padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
+              child: Text(
+                  "${widget.articles['description'] == null ? 'Description of Article' : widget.articles['description']}",
+                  style: Theme.of(context).textTheme.subhead),
+            ),
             Container(
               padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
               child: Text(
@@ -89,36 +90,41 @@ class _ArticleDetailState extends State<ArticleDetail> {
               ),
             ),
             Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Text(
-                          "For More Info Visit following URL :",
-                          style: Theme.of(context).textTheme.caption,
-                        ),
-                      ),
-                    ),
-                    InkWell(
-                      onTap: () async {
-                        if (await canLaunch(
-                            "${widget.articles['url'] == null ? 'Loading' : widget.articles['url'].toString()}")) {
-                          await launch("${widget.articles['url'].toString()}");
-                        } else {
-                          Exception("URL doesn't exist");
-                        }
-                      },
+              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
                       child: Text(
-                        "Click here",
-                        style: TextStyle(
-                            color: Colors.blue,
-                            decoration: TextDecoration.underline),
+                        "For More Info Visit following URL :",
+                        style: Theme.of(context).textTheme.caption,
                       ),
                     ),
-                  ],
-                )),
+                  ),
+                  InkWell(
+                    onTap: () async {
+                      // **** open the link in the default browser when link is clicked ****
+                      if (await canLaunch(
+                          "${widget.articles['url'] == null ? 'Loading' : widget.articles['url'].toString()}")) {
+                        await launch("${widget.articles['url'].toString()}");
+                      } else {
+                        Exception("URL doesn't exist");
+                      }
+                    },
+                    child: Text(
+                      "Click here",
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                        debugLabel: "Link",
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
