@@ -19,10 +19,10 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
 
   // **** Swipe to refresh ****
-  final GlobalKey<RefreshIndicatorState> _refreshKey1 =
-      GlobalKey<RefreshIndicatorState>();
-  final GlobalKey<RefreshIndicatorState> _refreshKey2 =
-      GlobalKey<RefreshIndicatorState>();
+  // final GlobalKey<RefreshIndicatorState> _refreshKey1 =
+  //     GlobalKey<RefreshIndicatorState>();
+  // final GlobalKey<RefreshIndicatorState> _refreshKey2 =
+  //     GlobalKey<RefreshIndicatorState>();
 
 // **** Calling top headlines or trending from newsapi ****
   Future<String> getData() async {
@@ -187,10 +187,10 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
               children: <Widget>[
                 // **** Building list of trending news from news[] list ****
                 // **** RefreshIndicator is used to implement the functionality of Swipe down to refresh it requires a GlobalKey and onRefresh callback ****
-                RefreshIndicator(
-                  key: _refreshKey1,
-                  onRefresh: _refresh1,
-                  child: ListView.builder(
+                // RefreshIndicator(
+                  // key: _refreshKey1,
+                  // onRefresh: _refresh1,
+                   ListView.builder(
                     itemCount: news == null ? 0 : news.length,
                     itemBuilder: (_, int i) {
                       return Column(
@@ -282,13 +282,13 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                       );
                     },
                   ),
-                ),
+                
 
                 // // Building list of allnews from allnews[] list
-                RefreshIndicator(
-                  key: _refreshKey2,
-                  onRefresh: _refresh2,
-                  child: ListView.builder(
+                // RefreshIndicator(
+                //   key: _refreshKey2,
+                //   onRefresh: _refresh2,
+                  ListView.builder(
                     itemCount: allnews == null ? 0 : allnews.length,
                     itemBuilder: (_, int i) {
                       return Column(
@@ -378,7 +378,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                       );
                     },
                   ),
-                ),
+              
               ],
             ),
           ],
@@ -388,23 +388,23 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
   }
 
 // **** calling the refresh callback when swipe down ****
-  Future _refresh1() async {
-    print("Refrshing");
-    // **** from getData() function then refresh it *****
-    await getData().then((data) {
-      setState(() {
-        news = data as List;
-      });
-    });
-  }
+  // Future<void> _refresh1() async {
+  //   print("Refrshing");
+  //   // **** from getData() function then refresh it *****
+  //   await getData().then((data) {
+  //     setState(() {
+  //       news = data as List;
+  //     });
+  //   });
+  // }
 
-  Future _refresh2() async {
-    print("Refrshing");
-    // **** from getData() function then refresh it *****
-    await getAllData().then((data) {
-      setState(() {
-        allnews = data as List;
-      });
-    });
-  }
+  // Future<void> _refresh2() async {
+  //   print("Refrshing");
+  //   // **** from getData() function then refresh it *****
+  //   await getAllData().then((data) {
+  //     setState(() {
+  //       allnews = data as List;
+  //     });
+  //   });
+  // }
 }

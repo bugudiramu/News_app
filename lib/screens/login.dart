@@ -155,8 +155,10 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                     "photoUrl": user.photoUrl,
                     "userId": user.uid,
                   });
+
                   Navigator.of(context)
                       .push(MaterialPageRoute(builder: (context) => AllNews()));
+                  Navigator.of(context).pop();
                 }
               },
             ),
@@ -202,18 +204,18 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
 }
 
 // Dark Mode
-  // bool _darkmode = false;
+// bool _darkmode = false;
 
-  // theme: _darkmode ? ThemeData.dark() : ThemeData.light(),
+// theme: _darkmode ? ThemeData.dark() : ThemeData.light(),
 
-  // ListTile(
-  //   title: Text("DarkMode"),
-  //   trailing: Switch(
-  //     value: _darkmode,
-  //     onChanged: (val) {
-  //       setState(() {
-  //         _darkmode = val;
-  //       });
-  //     },
-  //   ),
-  // ),
+// ListTile(
+//   title: Text("DarkMode"),
+//   trailing: Switch(
+//     value: _darkmode,
+//     onChanged: (val) {
+//       setState(() {
+//         _darkmode = val;
+//       });
+//     },
+//   ),
+// ),
