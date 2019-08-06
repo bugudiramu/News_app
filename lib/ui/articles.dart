@@ -17,6 +17,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
   List allnews = [];
   FirebaseUser currentUser;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  bool isLoading = false;
 
   // **** Swipe to refresh ****
   // final GlobalKey<RefreshIndicatorState> _refreshKey1 =
@@ -177,11 +178,12 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
           children: <Widget>[
             // **** Showing loading Indicator ****
             Center(
-              child: CircularProgressIndicator(
-                backgroundColor: Colors.white,
-                strokeWidth: 2.5,
-              ),
+              child: Text("Loading!"
+                  // backgroundColor: Colors.white,
+                  // strokeWidth: 2.5,
+                  ),
             ),
+
             // **** Building TabBarView for showing the news in the body ****
             TabBarView(
               children: <Widget>[
