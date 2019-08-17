@@ -4,6 +4,7 @@ import 'package:news_app/services/googleSignIn.dart';
 import 'package:news_app/services/usermanagement.dart';
 import 'package:news_app/ui/articles.dart';
 import 'package:random_color/random_color.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 
@@ -31,7 +32,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     super.initState();
 
     // **** Check whether the device is connected to any network or not ****
-    _checkDataConnectivity();
+    checkDataConnectivity();
     controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 2700),
@@ -157,7 +158,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                           ),
                           onPressed: () async {
                             // **** Show Loading Indicator when button is pressed ****
-                            _checkDataConnectivity();
+                            checkDataConnectivity();
                             showDialog(
                                 context: context,
                                 barrierDismissible: false,
@@ -192,16 +193,17 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                               //   _showCofirmDialog();
                               // });
                               // **** Create the user in Firebase Realtime Database by using UserManagemet class ****
-                              userManagement.createUser(user.uid.toString(), {
+                              userManagement.createUser(user.uid, {
                                 "userName": user.displayName,
                                 "email": user.email,
                                 "photoUrl": user.photoUrl,
                                 "userId": user.uid,
                               });
-
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => AllNews()));
-                              Navigator.of(context).pop();
+// Try to replace the login route with HomeScreen Route(AllNews()) because we are unable to go back to login screen again when pressing back button.
+                              Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                      builder: (context) => AllNews()));
+                              // Navigator.of(context).pop();
                             }
                           },
                         ),
@@ -215,55 +217,37 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
         });
   }
 
-  Future<void> _checkDataConnectivity() async {
+  Future<void> checkDataConnectivity() async {
     // **** Check the connectivity ****
     var result = await DataConnectionChecker().hasConnection;
     if (result == true) {
       print("Connected");
     } else {
-      // **** Showing confirmation dialog ****
-      showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return Container(
-              decoration: BoxDecoration(
-                border: Border.all(
-                  width: 2.0,
-                  color: Colors.grey,
-                ),
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-              child: AlertDialog(
-                content: Text(
-                    "You are Offline.No Internet Please Connect To Network!"),
-                actions: <Widget>[
-                  FlatButton(
-                    onPressed: () => Navigator.of(context).pop(),
-                    child: Text("OK"),
-                  )
-                ],
-              ),
-            );
-          });
+      Alert(
+        context: context,
+        type: AlertType.info,
+        title: "No Internet",
+        desc: "You are Offline.No Internet Please Connect To A Network!",
+        style: AlertStyle(
+          animationType: AnimationType.fromTop,
+          titleStyle: TextStyle(
+            color: Colors.red,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        buttons: [
+          DialogButton(
+            child: Text(
+              "OK",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+            onPressed: () => Navigator.pop(context),
+            width: 120,
+          )
+        ],
+      ).show();
       print('No internet :( Reason:');
       print(DataConnectionChecker().lastTryResults);
     }
   }
 }
-
-// Dark Mode
-// bool _darkmode = false;
-
-// theme: _darkmode ? ThemeData.dark() : ThemeData.light(),
-
-// ListTile(
-//   title: Text("DarkMode"),
-//   trailing: Switch(
-//     value: _darkmode,
-//     onChanged: (val) {
-//       setState(() {
-//         _darkmode = val;
-//       });
-//     },
-//   ),
-// ),
