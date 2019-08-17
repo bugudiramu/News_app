@@ -200,9 +200,16 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                                 "userId": user.uid,
                               });
 // Try to replace the login route with HomeScreen Route(AllNews()) because we are unable to go back to login screen again when pressing back button.
-                              Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                      builder: (context) => AllNews()));
+                              // Navigator.of(context).pushReplacement(
+                              //     MaterialPageRoute(
+                              //         builder: (context) => AllNews()));
+                              Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AllNews()),
+                                (Route<dynamic> route) => false,
+                              );
+
                               // Navigator.of(context).pop();
                             }
                           },
