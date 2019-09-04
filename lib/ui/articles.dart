@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:news_app/ui/articleDetail.dart';
 import 'package:news_app/ui/login.dart';
+import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
 
 class AllNews extends StatefulWidget {
   @override
@@ -59,6 +60,9 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     this.getAllData();
     // **** Loading current user details ****
     _loadCurrentUser();
+    //Dynamic link
+
+    this.initDynamicLinks();
 
     // **** Refresh automatically when the app launches ****.
     // WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -67,6 +71,27 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     // WidgetsBinding.instance.addPostFrameCallback((_) {
     //   _refreshKey2.currentState.show();
     // });
+  }
+
+// Dynamic link
+  void initDynamicLinks() async {
+    final PendingDynamicLinkData data =
+        await FirebaseDynamicLinks.instance.getInitialLink();
+    final Uri deepLink = data?.link;
+    print(deepLink);
+    if (deepLink != null) {
+      Navigator.pushNamed(context, deepLink.path);
+    }
+    FirebaseDynamicLinks.instance.onLink(
+        onSuccess: (PendingDynamicLinkData dynamicLink) async {
+      final Uri deepLink = dynamicLink?.link;
+      if (deepLink != null) {
+        Navigator.pushNamed(context, deepLink.path);
+      }
+    }, onError: (OnLinkErrorException e) async {
+      print('OnLinkError');
+      print(e.message);
+    });
   }
 
   void _loadCurrentUser() async {
@@ -313,12 +338,11 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                       tag: allnews[i]['title'],
                                       child: FadeInImage.assetNetwork(
                                         placeholder: 'images/loading.gif',
-                                        image:
-                                            allnews[i]['urlToImage'] == null
-                                                ? Image.asset(
-                                                    'images/imgPlaceholder.png',
-                                                  ).toString()
-                                                : allnews[i]['urlToImage'],
+                                        image: allnews[i]['urlToImage'] == null
+                                            ? Image.asset(
+                                                'images/imgPlaceholder.png',
+                                              ).toString()
+                                            : allnews[i]['urlToImage'],
                                       ),
                                     ),
                                     Padding(
@@ -386,8 +410,6 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
-
 
 // **** calling the refresh callback when swipe down ****
   // Future<void> _refresh1() async {

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:share/share.dart';
 
 class ArticleDetail extends StatefulWidget {
   final articles;
@@ -9,6 +10,9 @@ class ArticleDetail extends StatefulWidget {
 }
 
 class _ArticleDetailState extends State<ArticleDetail> {
+  final myUrl = "https://buzzyfeed.page.link/AJDA";
+  final img =
+      "https://carepharmaceuticals.com.au/wp-content/uploads/sites/19/2018/02/placeholder-600x400.png";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,6 +35,33 @@ class _ArticleDetailState extends State<ArticleDetail> {
               child: Text(
                 "${widget.articles['title'] == null ? 'Title Here' : widget.articles['title']}",
                 style: Theme.of(context).textTheme.headline,
+              ),
+            ),
+            // Author name
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
+              child: Row(
+                children: <Widget>[
+                  Text(
+                    "Posted by : ",
+                    style: Theme.of(context).textTheme.body2,
+                  ),
+                  Expanded(
+                    child: Text(
+                      "${widget.articles['author'] == null ? 'Ananymous Author' : widget.articles['author'].toString()}",
+                      style: Theme.of(context).textTheme.subhead,
+                    ),
+                  ),
+                  Container(
+                    // alignment: Alignment.center,
+                    child: IconButton(
+                      icon: Icon(Icons.share),
+                      color: Colors.blueGrey,
+                      onPressed: () =>
+                          Share.share("Visit my url at $myUrl"),
+                    ),
+                  ),
+                ],
               ),
             ),
             Padding(
@@ -59,23 +90,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
                 ],
               ),
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
-              child: Row(
-                children: <Widget>[
-                  Text(
-                    "Posted by : ",
-                    style: Theme.of(context).textTheme.body2,
-                  ),
-                  Expanded(
-                    child: Text(
-                      "${widget.articles['author'] == null ? 'Ananymous Author' : widget.articles['author'].toString()}",
-                      style: Theme.of(context).textTheme.subhead,
-                    ),
-                  )
-                ],
-              ),
-            ),
+
             Container(
               padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
               child: Text(
