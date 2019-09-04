@@ -11,8 +11,7 @@ class ArticleDetail extends StatefulWidget {
 
 class _ArticleDetailState extends State<ArticleDetail> {
   final myUrl = "https://buzzyfeed.page.link/AJDA";
-  final img =
-      "https://carepharmaceuticals.com.au/wp-content/uploads/sites/19/2018/02/placeholder-600x400.png";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

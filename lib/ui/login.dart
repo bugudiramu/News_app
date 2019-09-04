@@ -4,7 +4,7 @@ import 'package:news_app/services/googleSignIn.dart';
 import 'package:news_app/services/usermanagement.dart';
 import 'package:news_app/ui/articles.dart';
 import 'package:random_color/random_color.dart';
-import 'package:rflutter_alert/rflutter_alert.dart';
+// import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 
@@ -230,7 +230,38 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     if (result == true) {
       print("Connected");
     } else {
-      Alert(
+      showDialog(
+          context: context,
+          builder: (_) {
+            return AlertDialog(
+              semanticLabel: "No Internet Dialog",
+
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50.0)),
+              content: Image.asset("images/no_internet.gif"),
+              title: Column(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "No Internet",
+                      style: Theme.of(context).textTheme.headline,
+                    ),
+                  ),
+              
+                ],
+              ),
+              // actions: <Widget>[
+              //   FlatButton(
+              //     child: Text("Ok"),
+              //     onPressed: () {
+              //      Navigator.of(context).pop();
+              //     },
+              //   )
+              // ],
+            );
+          });
+      /*Alert(
         context: context,
         type: AlertType.info,
         title: "No Internet",
@@ -252,7 +283,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
             width: 120,
           )
         ],
-      ).show();
+      ).show();*/
       print('No internet :( Reason:');
       print(DataConnectionChecker().lastTryResults);
     }
