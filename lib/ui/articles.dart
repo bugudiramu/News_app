@@ -1,3 +1,4 @@
+import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
@@ -54,7 +55,8 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-
+// Check the internet connectivity
+    this.checkDataConnectivity();
     // **** invoking both api calls when the app started to build ****
     this.getData();
     this.getAllData();
@@ -124,6 +126,48 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
       return currentUser.photoUrl;
     } else {
       return "G";
+    }
+  }
+
+  Future<void> checkDataConnectivity() async {
+    // **** Check the connectivity ****
+    var result = await DataConnectionChecker().hasConnection;
+    if (result == true) {
+      print("Connected");
+    } else {
+      showDialog(
+          context: context,
+          builder: (_) {
+            return AlertDialog(
+              semanticLabel: "No Internet Dialog",
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50.0)),
+              content: Image.asset("images/no_internet.gif"),
+              title: Column(
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "No Internet",
+                      style: Theme.of(context).textTheme.headline,
+                    ),
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("Ok"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
+            );
+          });
+
+      print('No internet :( Reason:');
+      print(DataConnectionChecker().lastTryResults);
     }
   }
 

@@ -235,7 +235,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
           builder: (_) {
             return AlertDialog(
               semanticLabel: "No Internet Dialog",
-
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(50.0)),
               content: Image.asset("images/no_internet.gif"),
@@ -248,17 +247,16 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                       style: Theme.of(context).textTheme.headline,
                     ),
                   ),
-              
                 ],
               ),
-              // actions: <Widget>[
-              //   FlatButton(
-              //     child: Text("Ok"),
-              //     onPressed: () {
-              //      Navigator.of(context).pop();
-              //     },
-              //   )
-              // ],
+              actions: <Widget>[
+                FlatButton(
+                  child: Text("Ok"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                )
+              ],
             );
           });
       /*Alert(
