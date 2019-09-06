@@ -230,27 +230,7 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     if (result == true) {
       print("Connected");
     } else {
-      // showDialog(
-      //     context: context,
-      //     builder: (_) {
-      //       return AlertDialog(
-      //         semanticLabel: "No Internet Dialog",
-      //         shape: RoundedRectangleBorder(
-      //             borderRadius: BorderRadius.circular(50.0)),
-      //         content: Image.asset("images/no_internet.gif"),
-      //         title: Column(
-      //           children: <Widget>[
-      //             Container(
-      //               alignment: Alignment.center,
-      //               child: Text(
-      //                 "No Internet",
-      //                 style: Theme.of(context).textTheme.headline,
-      //               ),
-      //             ),
-      //           ],
-      //         ),
-      //       );
-      //     });
+      
       Alert(
         context: context,
         type: AlertType.error,

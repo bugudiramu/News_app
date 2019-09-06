@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'package:news_app/ui/articleDetail.dart';
 import 'package:news_app/ui/login.dart';
 import 'package:firebase_dynamic_links/firebase_dynamic_links.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class AllNews extends StatefulWidget {
   @override
@@ -244,37 +245,34 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     if (result == true) {
       print("Connected");
     } else {
-      showDialog(
-          context: context,
-          builder: (_) {
-            return AlertDialog(
-              semanticLabel: "No Internet Dialog",
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50.0)),
-              content: Image.asset("images/no_internet.gif"),
-              title: Column(
-                children: <Widget>[
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      "No Internet",
-                      style: Theme.of(context).textTheme.headline,
-                    ),
-                  ),
-                ],
+      Alert(
+        context: context,
+        type: AlertType.error,
+        title: "No Internet",
+        desc:
+            "You are Offline.No Internet Conncection Please Connect To A Network!",
+        style: AlertStyle(
+          animationType: AnimationType.fromTop,
+          titleStyle: TextStyle(
+            color: Colors.red,
+            fontWeight: FontWeight.w900,
+            fontSize: 30.0,
+          ),
+          descStyle: TextStyle(color: Colors.white, fontSize: 15.0),
+        ),
+        buttons: [
+          DialogButton(
+              color: Colors.grey,
+              child: Text(
+                "OK",
+                style: TextStyle(fontSize: 20),
               ),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text("Ok"),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
-                  },
-                )
-              ],
-            );
-          });
-
+              width: 120,
+              onPressed: () {
+                Navigator.pop(context);
+              })
+        ],
+      ).show();
       print('No internet :( Reason:');
       print(DataConnectionChecker().lastTryResults);
     }
@@ -1143,7 +1141,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     );
   }
 
-//  calling the refresh callback when swipe down 
+//  calling the refresh callback when swipe down
   Future _refreshTrendingTab() async {
     print("Refrshing");
     // **** from getData() function then refresh it *****
