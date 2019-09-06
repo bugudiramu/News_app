@@ -4,7 +4,7 @@ import 'package:news_app/services/googleSignIn.dart';
 import 'package:news_app/services/usermanagement.dart';
 import 'package:news_app/ui/articles.dart';
 import 'package:random_color/random_color.dart';
-// import 'package:rflutter_alert/rflutter_alert.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:data_connection_checker/data_connection_checker.dart';
 
@@ -230,50 +230,55 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
     if (result == true) {
       print("Connected");
     } else {
-      showDialog(
-          context: context,
-          builder: (_) {
-            return AlertDialog(
-              semanticLabel: "No Internet Dialog",
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50.0)),
-              content: Image.asset("images/no_internet.gif"),
-              title: Column(
-                children: <Widget>[
-                  Container(
-                    alignment: Alignment.center,
-                    child: Text(
-                      "No Internet",
-                      style: Theme.of(context).textTheme.headline,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          });
-      /*Alert(
+      // showDialog(
+      //     context: context,
+      //     builder: (_) {
+      //       return AlertDialog(
+      //         semanticLabel: "No Internet Dialog",
+      //         shape: RoundedRectangleBorder(
+      //             borderRadius: BorderRadius.circular(50.0)),
+      //         content: Image.asset("images/no_internet.gif"),
+      //         title: Column(
+      //           children: <Widget>[
+      //             Container(
+      //               alignment: Alignment.center,
+      //               child: Text(
+      //                 "No Internet",
+      //                 style: Theme.of(context).textTheme.headline,
+      //               ),
+      //             ),
+      //           ],
+      //         ),
+      //       );
+      //     });
+      Alert(
         context: context,
-        type: AlertType.info,
+        type: AlertType.error,
         title: "No Internet",
-        desc: "You are Offline.No Internet Please Connect To A Network!",
+        desc:
+            "You are Offline.No Internet Conncection Please Connect To A Network!",
         style: AlertStyle(
           animationType: AnimationType.fromTop,
           titleStyle: TextStyle(
             color: Colors.red,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w900,
+            fontSize: 30.0,
           ),
+          descStyle: TextStyle(color: Colors.white, fontSize: 15.0),
         ),
         buttons: [
           DialogButton(
-            child: Text(
-              "OK",
-              style: TextStyle(color: Colors.white, fontSize: 20),
-            ),
-            onPressed: () => Navigator.pop(context),
-            width: 120,
-          )
+              color: Colors.grey,
+              child: Text(
+                "OK",
+                style: TextStyle(fontSize: 20),
+              ),
+              width: 120,
+              onPressed: () {
+                Navigator.pop(context);
+              })
         ],
-      ).show();*/
+      ).show();
       print('No internet :( Reason:');
       print(DataConnectionChecker().lastTryResults);
     }

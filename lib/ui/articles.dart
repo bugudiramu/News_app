@@ -1,3 +1,5 @@
+// Imports
+
 import 'package:data_connection_checker/data_connection_checker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -14,25 +16,38 @@ class AllNews extends StatefulWidget {
 }
 
 class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
+  // List of of that each tab contains:
   List trendingNews = [];
   List entertainmentNews = [];
   List techNews = [];
-  List sportsNews = [];
-  // List generalNews = [];
   List scienceNews = [];
-  List businessNews = [];
+  List sportsNews = [];
   List healthNews = [];
+  // List generalNews = [];
+  List businessNews = [];
+  // Variables
   FirebaseUser currentUser;
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   bool isLoading = false;
 
-  // **** Swipe to refresh ****
-  // final GlobalKey<RefreshIndicatorState> _refreshKey1 =
-  //     GlobalKey<RefreshIndicatorState>();
-  // final GlobalKey<RefreshIndicatorState> _refreshKey2 =
-  //     GlobalKey<RefreshIndicatorState>();
+  //  Keys to implement Swipe to refresh
+  final GlobalKey<RefreshIndicatorState> _trendingTabRefreshKey =
+      GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _entertainmentTabRefreshKey =
+      GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _techTabRefreshKey =
+      GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _scienceTabRefreshKey =
+      GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _sportsTabRefreshKey =
+      GlobalKey<RefreshIndicatorState>();
 
-// **** Calling top headlines or trending from newsapi ****
+  final GlobalKey<RefreshIndicatorState> _healthTabRefreshKey =
+      GlobalKey<RefreshIndicatorState>();
+  final GlobalKey<RefreshIndicatorState> _businessTabRefreshKey =
+      GlobalKey<RefreshIndicatorState>();
+
+//  Calling trending news from newsapi.org
   Future<String> getTrendingData() async {
     String url1 =
         "https://newsapi.org/v2/top-headlines?country=in&pagesize=100&apiKey=31ca4832eab448daa762754f150bd3b8";
@@ -44,7 +59,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     });
     return "Success";
   }
-  // **** Calling Entertainment from newsapi ****
+  //  Calling Entertainment news from newsapi.org
 
   Future<String> getEntertainmentData() async {
     String url2 =
@@ -70,6 +85,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     });
     return "Success";
   }
+// Calling Sports news from newsapi.org
 
   Future<void> getSportsData() async {
     String url4 =
@@ -82,6 +98,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     });
     return "Success";
   }
+// Calling Science news from newsapi.org
 
   Future<void> getScienceData() async {
     String url5 =
@@ -94,6 +111,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     });
     return "Success";
   }
+// Calling Business news from newsapi.org
 
   Future<void> getBusinessData() async {
     String url6 =
@@ -106,6 +124,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     });
     return "Success";
   }
+// Calling Health news from newsapi.org
 
   Future<void> getHealthData() async {
     String url7 =
@@ -118,13 +137,14 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     });
     return "Success";
   }
+  // InitState
 
   @override
   void initState() {
     super.initState();
     // Check the internet connectivity
     this.checkDataConnectivity();
-    // **** invoking both api calls when the app started to build ****
+    //  invoking api calls when the app started to build ****
     this.getTrendingData();
     this.getEntertainmentData();
     this.getTechnologyData();
@@ -138,13 +158,28 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
 
     this.initDynamicLinks();
 
-    // **** Refresh automatically when the app launches ****.
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _refreshKey1.currentState.show();
-    // });
-    // WidgetsBinding.instance.addPostFrameCallback((_) {
-    //   _refreshKey2.currentState.show();
-    // });
+    //  Refresh automatically when the app launches
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _trendingTabRefreshKey.currentState.show();
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _entertainmentTabRefreshKey.currentState.show();
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _techTabRefreshKey.currentState.show();
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scienceTabRefreshKey.currentState.show();
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _sportsTabRefreshKey.currentState.show();
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _healthTabRefreshKey.currentState.show();
+    });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _businessTabRefreshKey.currentState.show();
+    });
   }
 
 // Dynamic link
@@ -167,6 +202,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
       print(e.message);
     });
   }
+  // Loading the current user data
 
   void _loadCurrentUser() async {
     // Setting the current user details to currentuser object
@@ -201,6 +237,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     }
   }
 
+// Connectivity checker function
   Future<void> checkDataConnectivity() async {
     // **** Check the connectivity ****
     var result = await DataConnectionChecker().hasConnection;
@@ -245,7 +282,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    // **** Default Tab controller ****
+    //  Default Tab controller
     return DefaultTabController(
       initialIndex: 0,
       length: 7,
@@ -267,7 +304,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
               ),
               InkWell(
                 onTap: () async {
-                  // **** Signing out the user popping the screen and navigate the user to login page ****
+                  //  Signing out the user popping the screen and navigate the user to login page
                   await firebaseAuth.signOut().then((user) {
                     Navigator.of(context).pop();
                     Navigator.of(context).pushReplacement(
@@ -293,15 +330,14 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
           title: Text("BuzzyFeed"),
           centerTitle: true,
           elevation: 0,
-          // backgroundColor: Colors.blueGrey,
-          backgroundColor: Colors.black,
-          // **** Tabbar in appbar ****
+
+          //  Tabbar in appbar
           bottom: TabBar(
             isScrollable: true,
             indicatorColor: Colors.white70,
             indicatorPadding: const EdgeInsets.all(2.0),
-            // **** The size of the indicator is same as the size of the text ****
-            // indicatorSize: TabBarIndicatorSize.label,
+            //  The size of the indicator is same as the size of the text
+            indicatorSize: TabBarIndicatorSize.label,
             indicatorWeight: 5.0,
 
             tabs: <Widget>[
@@ -345,733 +381,759 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
         ),
         body: Stack(
           children: <Widget>[
-            // **** Showing loading Indicator ****
-
-            Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.black26),
-              ),
-            ),
-
-            // **** Building TabBarView for showing the news in the body ****
+            //  Building TabBarView for showing the news in the body
             TabBarView(
               children: <Widget>[
-                // **** Building list of trending news from news[] list ****
-                // **** RefreshIndicator is used to implement the functionality of Swipe down to refresh it requires a GlobalKey and onRefresh callback ****
-                // RefreshIndicator(
-                // key: _refreshKey1,
-                // onRefresh: _refresh1,
-                ListView.builder(
-                  itemCount: trendingNews == null ? 0 : trendingNews.length,
-                  itemBuilder: (_, int i) {
-                    return Column(
-                      children: <Widget>[
-                        Card(
-                          // color: Colors.blueGrey,
-                          color: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: ListTile(
-                            onTap: () {
-                              // debugPrint("ListTile tapped!");
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ArticleDetail(
-                                    articles: trendingNews[i] == null
-                                        ? Text("Loading!")
-                                        : trendingNews[i],
-                                  ),
-                                ),
-                              );
-                            },
-                            title: Container(
-                              child: Stack(
-                                // ****  AlignmentDirectional is used to place the text whereever we wanted on the image
-                                alignment: AlignmentDirectional(0, 1),
+                //  RefreshIndicator is used to implement the functionality of Swipe down to refresh it requires a GlobalKey and onRefresh callback
 
-                                children: <Widget>[
-                                  // **** Hero animation ****
-                                  Hero(
-                                    tag: trendingNews[i]['title'],
-                                    // **** FadeinImage is used to get more UX ****
-                                    child: FadeInImage.assetNetwork(
-                                      placeholder: 'images/loading.gif',
-                                      image:
-                                          trendingNews[i]['urlToImage'] == null
-                                              ? Image.asset(
-                                                  'images/imgPlaceholder.png',
-                                                ).toString()
-                                              : trendingNews[i]['urlToImage'],
+                RefreshIndicator(
+                  key: _trendingTabRefreshKey,
+                  onRefresh: _refreshTrendingTab,
+                  // Listview builder to return the trending news from newsapi.org
+                  child: ListView.builder(
+                    itemCount: trendingNews == null ? 0 : trendingNews.length,
+                    itemBuilder: (_, int i) {
+                      return Column(
+                        children: <Widget>[
+                          Card(
+                            color: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: ListTile(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ArticleDetail(
+                                      articles: trendingNews[i] == null
+                                          ? Text("Loading!")
+                                          : trendingNews[i],
                                     ),
                                   ),
+                                );
+                              },
+                              title: Container(
+                                child: Stack(
+                                  //   AlignmentDirectional is used to place the text whereever we wanted on the image
+                                  alignment: AlignmentDirectional(0, 1),
+
+                                  children: <Widget>[
+                                    //  Hero animation
+                                    Hero(
+                                      tag: trendingNews[i]['title'],
+                                      //  FadeinImage is used to get more UX
+                                      child: FadeInImage.assetNetwork(
+                                        placeholder: 'images/loading.gif',
+                                        image: trendingNews[i]['urlToImage'] ==
+                                                null
+                                            ? Image.asset(
+                                                'images/imgPlaceholder.png',
+                                              ).toString()
+                                            : trendingNews[i]['urlToImage'],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Text(
+                                        trendingNews[i]['title'] == null
+                                            ? Text("Title here").toString()
+                                            : trendingNews[i]['title']
+                                                .toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 16.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              subtitle: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Text(
-                                      trendingNews[i]['title'] == null
-                                          ? Text("Title here").toString()
-                                          : trendingNews[i]['title'].toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 16.0,
-                                          fontWeight: FontWeight.bold),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 2.0),
+                                    child: FlatButton(
+                                      splashColor: Colors.grey,
+                                      onPressed: () {
+                                        //  Navigate the user to articleDetail page when the button is pressed along with passing the data by using constructor methods.
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                ArticleDetail(
+                                              articles: trendingNews[i] == null
+                                                  ? Text("Loading!")
+                                                  : trendingNews[i],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        "Read More",
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white,
+                                            fontSize: 18.0,
+                                            letterSpacing: 0.8),
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            subtitle: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2.0),
-                                  child: FlatButton(
-                                    splashColor: Colors.grey,
-                                    onPressed: () {
-                                      // **** Navigate the user to articleDetail page when the button is pressed along with passing the data by using constructor methods.
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              ArticleDetail(
-                                            articles: trendingNews[i] == null
-                                                ? Text("Loading!")
-                                                : trendingNews[i],
+                          ),
+                          Container(),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                // Listview builder to return the entertainment news from newsapi.org
+
+                RefreshIndicator(
+                  key: _entertainmentTabRefreshKey,
+                  onRefresh: _refreshEntertainmentTab,
+                  child: ListView.builder(
+                    itemCount: entertainmentNews == null
+                        ? 0
+                        : entertainmentNews.length,
+                    itemBuilder: (_, int i) {
+                      return Column(
+                        children: <Widget>[
+                          Card(
+                            color: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: ListTile(
+                              onTap: () {
+                                debugPrint("ListTile tapped!");
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ArticleDetail(
+                                      articles: entertainmentNews[i] == null
+                                          ? Text("Loading!")
+                                          : entertainmentNews[i],
+                                    ),
+                                  ),
+                                );
+                              },
+                              title: Container(
+                                child: Stack(
+                                  alignment: AlignmentDirectional(0, 1),
+                                  children: <Widget>[
+                                    Hero(
+                                      tag: entertainmentNews[i]['title'],
+                                      child: FadeInImage.assetNetwork(
+                                        placeholder: 'images/loading.gif',
+                                        image: entertainmentNews[i]
+                                                    ['urlToImage'] ==
+                                                null
+                                            ? Image.asset(
+                                                'images/imgPlaceholder.png',
+                                              ).toString()
+                                            : entertainmentNews[i]
+                                                ['urlToImage'],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Text(
+                                        entertainmentNews[i]['title'] == null
+                                            ? Text("Title here").toString()
+                                            : entertainmentNews[i]['title']
+                                                .toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              subtitle: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 2.0),
+                                    child: FlatButton(
+                                      splashColor: Colors.black,
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                ArticleDetail(
+                                              articles:
+                                                  entertainmentNews[i] == null
+                                                      ? Text("Loading!")
+                                                      : entertainmentNews[i],
+                                            ),
                                           ),
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      "Read More",
-                                      style: TextStyle(
+                                        );
+                                      },
+                                      child: Text(
+                                        "Read More",
+                                        style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                           fontSize: 18.0,
-                                          letterSpacing: 0.8),
+                                        ),
+                                      ),
                                     ),
                                   ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
-                        ),
-                        Container(),
-                      ],
-                    );
-                  },
+                          Container(),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                // Listview builder to return the Techonology news from newsapi.org
+
+                RefreshIndicator(
+                  key: _techTabRefreshKey,
+                  onRefresh: _refreshTechTab,
+                  child: ListView.builder(
+                    itemCount: techNews == null ? 0 : techNews.length,
+                    itemBuilder: (_, int i) {
+                      return Column(
+                        children: <Widget>[
+                          Card(
+                            color: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: ListTile(
+                              onTap: () {
+                                debugPrint("Hello");
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ArticleDetail(
+                                      articles: techNews[i] == null
+                                          ? Text("Loading!")
+                                          : techNews[i],
+                                    ),
+                                  ),
+                                );
+                              },
+                              title: Container(
+                                child: Stack(
+                                  alignment: AlignmentDirectional(0, 1),
+                                  children: <Widget>[
+                                    Hero(
+                                      tag: techNews[i]['title'],
+                                      child: FadeInImage.assetNetwork(
+                                        placeholder: 'images/loading.gif',
+                                        image: techNews[i]['urlToImage'] == null
+                                            ? Image.asset(
+                                                'images/imgPlaceholder.png',
+                                              ).toString()
+                                            : techNews[i]['urlToImage'],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Text(
+                                        techNews[i]['title'] == null
+                                            ? Text("Title here").toString()
+                                            : techNews[i]['title'].toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              subtitle: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 2.0),
+                                    child: FlatButton(
+                                      splashColor: Colors.black,
+                                      // color: Colors.black54,
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                ArticleDetail(
+                                              articles: techNews[i] == null
+                                                  ? Text("Loading!")
+                                                  : techNews[i],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        "Read More",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 18.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          // Container(),
+                          Container(),
+                        ],
+                      );
+                    },
+                  ),
+                ),
+                // Listview builder to return the Science news from newsapi.org
+
+                RefreshIndicator(
+                  key: _scienceTabRefreshKey,
+                  onRefresh: _refreshScienceTab,
+                  child: ListView.builder(
+                    itemCount: scienceNews == null ? 0 : scienceNews.length,
+                    itemBuilder: (_, int i) {
+                      return Column(
+                        children: <Widget>[
+                          Card(
+                            // color: Colors.blueGrey,
+                            color: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: ListTile(
+                              onTap: () {
+                                debugPrint("Hello");
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ArticleDetail(
+                                      articles: scienceNews[i] == null
+                                          ? Text("Loading!")
+                                          : scienceNews[i],
+                                    ),
+                                  ),
+                                );
+                              },
+                              title: Container(
+                                child: Stack(
+                                  alignment: AlignmentDirectional(0, 1),
+                                  children: <Widget>[
+                                    Hero(
+                                      tag: scienceNews[i]['title'],
+                                      child: FadeInImage.assetNetwork(
+                                        placeholder: 'images/loading.gif',
+                                        image:
+                                            scienceNews[i]['urlToImage'] == null
+                                                ? Image.asset(
+                                                    'images/imgPlaceholder.png',
+                                                  ).toString()
+                                                : scienceNews[i]['urlToImage'],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Text(
+                                        scienceNews[i]['title'] == null
+                                            ? Text("Title here").toString()
+                                            : scienceNews[i]['title']
+                                                .toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              subtitle: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 2.0),
+                                    child: FlatButton(
+                                      splashColor: Colors.black,
+                                      // color: Colors.black54,
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                ArticleDetail(
+                                              articles: scienceNews[i] == null
+                                                  ? Text("Loading!")
+                                                  : scienceNews[i],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        "Read More",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                          fontSize: 18.0,
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          // Container(),
+                          Container(),
+                        ],
+                      );
+                    },
+                  ),
                 ),
 
-                // // Building list of allnews from allnews[] list
-                // RefreshIndicator(
-                //   key: _refreshKey2,
-                //   onRefresh: _refresh2,
-                ListView.builder(
-                  itemCount:
-                      entertainmentNews == null ? 0 : entertainmentNews.length,
-                  itemBuilder: (_, int i) {
-                    return Column(
-                      children: <Widget>[
-                        Card(
-                          // color: Colors.blueGrey,
-                          color: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: ListTile(
-                            onTap: () {
-                              debugPrint("Hello");
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ArticleDetail(
-                                    articles: entertainmentNews[i] == null
-                                        ? Text("Loading!")
-                                        : entertainmentNews[i],
-                                  ),
-                                ),
-                              );
-                            },
-                            title: Container(
-                              child: Stack(
-                                alignment: AlignmentDirectional(0, 1),
-                                children: <Widget>[
-                                  Hero(
-                                    tag: entertainmentNews[i]['title'],
-                                    child: FadeInImage.assetNetwork(
-                                      placeholder: 'images/loading.gif',
-                                      image: entertainmentNews[i]
-                                                  ['urlToImage'] ==
-                                              null
-                                          ? Image.asset(
-                                              'images/imgPlaceholder.png',
-                                            ).toString()
-                                          : entertainmentNews[i]['urlToImage'],
+                // Listview builder to return the Sports news from newsapi.org
+
+                RefreshIndicator(
+                  key: _sportsTabRefreshKey,
+                  onRefresh: _refreshSportsTab,
+                  child: ListView.builder(
+                    itemCount: sportsNews == null ? 0 : sportsNews.length,
+                    itemBuilder: (_, int i) {
+                      return Column(
+                        children: <Widget>[
+                          Card(
+                            // color: Colors.blueGrey,
+                            color: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: ListTile(
+                              onTap: () {
+                                debugPrint("Hello");
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ArticleDetail(
+                                      articles: sportsNews[i] == null
+                                          ? Text("Loading!")
+                                          : sportsNews[i],
                                     ),
                                   ),
+                                );
+                              },
+                              title: Container(
+                                child: Stack(
+                                  alignment: AlignmentDirectional(0, 1),
+                                  children: <Widget>[
+                                    Hero(
+                                      tag: sportsNews[i]['title'],
+                                      child: FadeInImage.assetNetwork(
+                                        placeholder: 'images/loading.gif',
+                                        image:
+                                            sportsNews[i]['urlToImage'] == null
+                                                ? Image.asset(
+                                                    'images/imgPlaceholder.png',
+                                                  ).toString()
+                                                : sportsNews[i]['urlToImage'],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Text(
+                                        sportsNews[i]['title'] == null
+                                            ? Text("Title here").toString()
+                                            : sportsNews[i]['title'].toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              subtitle: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Text(
-                                      entertainmentNews[i]['title'] == null
-                                          ? Text("Title here").toString()
-                                          : entertainmentNews[i]['title']
-                                              .toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 2.0),
+                                    child: FlatButton(
+                                      splashColor: Colors.black,
+                                      // color: Colors.black54,
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                ArticleDetail(
+                                              articles: sportsNews[i] == null
+                                                  ? Text("Loading!")
+                                                  : sportsNews[i],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        "Read More",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                           fontSize: 18.0,
-                                          fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            subtitle: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2.0),
-                                  child: FlatButton(
-                                    splashColor: Colors.black,
-                                    // color: Colors.black54,
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              ArticleDetail(
-                                            articles:
-                                                entertainmentNews[i] == null
-                                                    ? Text("Loading!")
-                                                    : entertainmentNews[i],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      "Read More",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
-                        ),
-                        Container(),
-                      ],
-                    );
-                  },
-                ),
-                // Techonology news
-                ListView.builder(
-                  itemCount: techNews == null ? 0 : techNews.length,
-                  itemBuilder: (_, int i) {
-                    return Column(
-                      children: <Widget>[
-                        Card(
-                          // color: Colors.blueGrey,
-                          color: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: ListTile(
-                            onTap: () {
-                              debugPrint("Hello");
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ArticleDetail(
-                                    articles: techNews[i] == null
-                                        ? Text("Loading!")
-                                        : techNews[i],
-                                  ),
-                                ),
-                              );
-                            },
-                            title: Container(
-                              child: Stack(
-                                alignment: AlignmentDirectional(0, 1),
-                                children: <Widget>[
-                                  Hero(
-                                    tag: techNews[i]['title'],
-                                    child: FadeInImage.assetNetwork(
-                                      placeholder: 'images/loading.gif',
-                                      image: techNews[i]['urlToImage'] == null
-                                          ? Image.asset(
-                                              'images/imgPlaceholder.png',
-                                            ).toString()
-                                          : techNews[i]['urlToImage'],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Text(
-                                      techNews[i]['title'] == null
-                                          ? Text("Title here").toString()
-                                          : techNews[i]['title'].toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            subtitle: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2.0),
-                                  child: FlatButton(
-                                    splashColor: Colors.black,
-                                    // color: Colors.black54,
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              ArticleDetail(
-                                            articles: techNews[i] == null
-                                                ? Text("Loading!")
-                                                : techNews[i],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      "Read More",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        // Container(),
-                        Container(),
-                      ],
-                    );
-                  },
-                ),
-                ListView.builder(
-                  itemCount: scienceNews == null ? 0 : scienceNews.length,
-                  itemBuilder: (_, int i) {
-                    return Column(
-                      children: <Widget>[
-                        Card(
-                          // color: Colors.blueGrey,
-                          color: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: ListTile(
-                            onTap: () {
-                              debugPrint("Hello");
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ArticleDetail(
-                                    articles: scienceNews[i] == null
-                                        ? Text("Loading!")
-                                        : scienceNews[i],
-                                  ),
-                                ),
-                              );
-                            },
-                            title: Container(
-                              child: Stack(
-                                alignment: AlignmentDirectional(0, 1),
-                                children: <Widget>[
-                                  Hero(
-                                    tag: scienceNews[i]['title'],
-                                    child: FadeInImage.assetNetwork(
-                                      placeholder: 'images/loading.gif',
-                                      image:
-                                          scienceNews[i]['urlToImage'] == null
-                                              ? Image.asset(
-                                                  'images/imgPlaceholder.png',
-                                                ).toString()
-                                              : scienceNews[i]['urlToImage'],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Text(
-                                      scienceNews[i]['title'] == null
-                                          ? Text("Title here").toString()
-                                          : scienceNews[i]['title'].toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            subtitle: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2.0),
-                                  child: FlatButton(
-                                    splashColor: Colors.black,
-                                    // color: Colors.black54,
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              ArticleDetail(
-                                            articles: scienceNews[i] == null
-                                                ? Text("Loading!")
-                                                : scienceNews[i],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      "Read More",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        // Container(),
-                        Container(),
-                      ],
-                    );
-                  },
+                          // Container(),
+                          Container(),
+                        ],
+                      );
+                    },
+                  ),
                 ),
 
-                ListView.builder(
-                  itemCount: sportsNews == null ? 0 : sportsNews.length,
-                  itemBuilder: (_, int i) {
-                    return Column(
-                      children: <Widget>[
-                        Card(
-                          // color: Colors.blueGrey,
-                          color: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: ListTile(
-                            onTap: () {
-                              debugPrint("Hello");
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ArticleDetail(
-                                    articles: sportsNews[i] == null
-                                        ? Text("Loading!")
-                                        : sportsNews[i],
-                                  ),
-                                ),
-                              );
-                            },
-                            title: Container(
-                              child: Stack(
-                                alignment: AlignmentDirectional(0, 1),
-                                children: <Widget>[
-                                  Hero(
-                                    tag: sportsNews[i]['title'],
-                                    child: FadeInImage.assetNetwork(
-                                      placeholder: 'images/loading.gif',
-                                      image: sportsNews[i]['urlToImage'] == null
-                                          ? Image.asset(
-                                              'images/imgPlaceholder.png',
-                                            ).toString()
-                                          : sportsNews[i]['urlToImage'],
+                // Listview builder to return the Health news from newsapi.org
+
+                RefreshIndicator(
+                  key: _healthTabRefreshKey,
+                  onRefresh: _refreshHealthTab,
+                  child: ListView.builder(
+                    itemCount: healthNews == null ? 0 : healthNews.length,
+                    itemBuilder: (_, int i) {
+                      return Column(
+                        children: <Widget>[
+                          Card(
+                            // color: Colors.blueGrey,
+                            color: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: ListTile(
+                              onTap: () {
+                                debugPrint("Hello");
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ArticleDetail(
+                                      articles: healthNews[i] == null
+                                          ? Text("Loading!")
+                                          : healthNews[i],
                                     ),
                                   ),
+                                );
+                              },
+                              title: Container(
+                                child: Stack(
+                                  alignment: AlignmentDirectional(0, 1),
+                                  children: <Widget>[
+                                    Hero(
+                                      tag: healthNews[i]['title'],
+                                      child: FadeInImage.assetNetwork(
+                                        placeholder: 'images/loading.gif',
+                                        image:
+                                            healthNews[i]['urlToImage'] == null
+                                                ? Image.asset(
+                                                    'images/imgPlaceholder.png',
+                                                  ).toString()
+                                                : healthNews[i]['urlToImage'],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Text(
+                                        healthNews[i]['title'] == null
+                                            ? Text("Title here").toString()
+                                            : healthNews[i]['title'].toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              subtitle: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Text(
-                                      sportsNews[i]['title'] == null
-                                          ? Text("Title here").toString()
-                                          : sportsNews[i]['title'].toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 2.0),
+                                    child: FlatButton(
+                                      splashColor: Colors.black,
+                                      // color: Colors.black54,
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                ArticleDetail(
+                                              articles: healthNews[i] == null
+                                                  ? Text("Loading!")
+                                                  : healthNews[i],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        "Read More",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                           fontSize: 18.0,
-                                          fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            subtitle: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2.0),
-                                  child: FlatButton(
-                                    splashColor: Colors.black,
-                                    // color: Colors.black54,
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              ArticleDetail(
-                                            articles: sportsNews[i] == null
-                                                ? Text("Loading!")
-                                                : sportsNews[i],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      "Read More",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
-                        ),
-                        // Container(),
-                        Container(),
-                      ],
-                    );
-                  },
+                          // Container(),
+                          Container(),
+                        ],
+                      );
+                    },
+                  ),
                 ),
 
-                ListView.builder(
-                  itemCount: healthNews == null ? 0 : healthNews.length,
-                  itemBuilder: (_, int i) {
-                    return Column(
-                      children: <Widget>[
-                        Card(
-                          // color: Colors.blueGrey,
-                          color: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: ListTile(
-                            onTap: () {
-                              debugPrint("Hello");
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ArticleDetail(
-                                    articles: healthNews[i] == null
-                                        ? Text("Loading!")
-                                        : healthNews[i],
-                                  ),
-                                ),
-                              );
-                            },
-                            title: Container(
-                              child: Stack(
-                                alignment: AlignmentDirectional(0, 1),
-                                children: <Widget>[
-                                  Hero(
-                                    tag: healthNews[i]['title'],
-                                    child: FadeInImage.assetNetwork(
-                                      placeholder: 'images/loading.gif',
-                                      image: healthNews[i]['urlToImage'] == null
-                                          ? Image.asset(
-                                              'images/imgPlaceholder.png',
-                                            ).toString()
-                                          : healthNews[i]['urlToImage'],
-                                    ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Text(
-                                      healthNews[i]['title'] == null
-                                          ? Text("Title here").toString()
-                                          : healthNews[i]['title'].toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 18.0,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            subtitle: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2.0),
-                                  child: FlatButton(
-                                    splashColor: Colors.black,
-                                    // color: Colors.black54,
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              ArticleDetail(
-                                            articles: healthNews[i] == null
-                                                ? Text("Loading!")
-                                                : healthNews[i],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      "Read More",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        // Container(),
-                        Container(),
-                      ],
-                    );
-                  },
-                ),
+                // Listview builder to return the Business news from newsapi.org
 
-                ListView.builder(
-                  itemCount: businessNews == null ? 0 : businessNews.length,
-                  itemBuilder: (_, int i) {
-                    return Column(
-                      children: <Widget>[
-                        Card(
-                          // color: Colors.blueGrey,
-                          color: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: ListTile(
-                            onTap: () {
-                              debugPrint("Hello");
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (BuildContext context) =>
-                                      ArticleDetail(
-                                    articles: businessNews[i] == null
-                                        ? Text("Loading!")
-                                        : businessNews[i],
-                                  ),
-                                ),
-                              );
-                            },
-                            title: Container(
-                              child: Stack(
-                                alignment: AlignmentDirectional(0, 1),
-                                children: <Widget>[
-                                  Hero(
-                                    tag: businessNews[i]['title'],
-                                    child: FadeInImage.assetNetwork(
-                                      placeholder: 'images/loading.gif',
-                                      image:
-                                          businessNews[i]['urlToImage'] == null
-                                              ? Image.asset(
-                                                  'images/imgPlaceholder.png',
-                                                ).toString()
-                                              : businessNews[i]['urlToImage'],
+                RefreshIndicator(
+                  key: _businessTabRefreshKey,
+                  onRefresh: _refreshBusinessTab,
+                  child: ListView.builder(
+                    itemCount: businessNews == null ? 0 : businessNews.length,
+                    itemBuilder: (_, int i) {
+                      return Column(
+                        children: <Widget>[
+                          Card(
+                            // color: Colors.blueGrey,
+                            color: Colors.black,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                            child: ListTile(
+                              onTap: () {
+                                debugPrint("Hello");
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        ArticleDetail(
+                                      articles: businessNews[i] == null
+                                          ? Text("Loading!")
+                                          : businessNews[i],
                                     ),
                                   ),
+                                );
+                              },
+                              title: Container(
+                                child: Stack(
+                                  alignment: AlignmentDirectional(0, 1),
+                                  children: <Widget>[
+                                    Hero(
+                                      tag: businessNews[i]['title'],
+                                      child: FadeInImage.assetNetwork(
+                                        placeholder: 'images/loading.gif',
+                                        image: businessNews[i]['urlToImage'] ==
+                                                null
+                                            ? Image.asset(
+                                                'images/imgPlaceholder.png',
+                                              ).toString()
+                                            : businessNews[i]['urlToImage'],
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Text(
+                                        businessNews[i]['title'] == null
+                                            ? Text("Title here").toString()
+                                            : businessNews[i]['title']
+                                                .toString(),
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18.0,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              subtitle: Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.all(5.0),
-                                    child: Text(
-                                      businessNews[i]['title'] == null
-                                          ? Text("Title here").toString()
-                                          : businessNews[i]['title'].toString(),
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 2.0),
+                                    child: FlatButton(
+                                      splashColor: Colors.black,
+                                      // color: Colors.black54,
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (BuildContext context) =>
+                                                ArticleDetail(
+                                              articles: businessNews[i] == null
+                                                  ? Text("Loading!")
+                                                  : businessNews[i],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: Text(
+                                        "Read More",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                           fontSize: 18.0,
-                                          fontWeight: FontWeight.bold),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ],
                               ),
                             ),
-                            subtitle: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 2.0),
-                                  child: FlatButton(
-                                    splashColor: Colors.black,
-                                    // color: Colors.black54,
-                                    onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (BuildContext context) =>
-                                              ArticleDetail(
-                                            articles: businessNews[i] == null
-                                                ? Text("Loading!")
-                                                : businessNews[i],
-                                          ),
-                                        ),
-                                      );
-                                    },
-                                    child: Text(
-                                      "Read More",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white,
-                                        fontSize: 18.0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
                           ),
-                        ),
-                        // Container(),
-                        Container(),
-                      ],
-                    );
-                  },
+                          // Container(),
+                          Container(),
+                        ],
+                      );
+                    },
+                  ),
                 ),
               ],
             ),
@@ -1081,24 +1143,58 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
     );
   }
 
-// **** calling the refresh callback when swipe down ****
-  // Future<void> _refresh1() async {
-  //   print("Refrshing");
-  //   // **** from getData() function then refresh it *****
-  //   await getData().then((data) {
-  //     setState(() {
-  //       news = data as List;
-  //     });
-  //   });
-  // }
+//  calling the refresh callback when swipe down 
+  Future _refreshTrendingTab() async {
+    print("Refrshing");
+    // **** from getData() function then refresh it *****
+    // await getTrendingData().then((data) {
+    //   setState(() {
+    //     trendingNews = data as List;
+    //   });
+    // });
+    await getTrendingData();
+    setState(() {});
+  }
 
-  // Future<void> _refresh2() async {
-  //   print("Refrshing");
-  //   // **** from getData() function then refresh it *****
-  //   await getAllData().then((data) {
-  //     setState(() {
-  //       allnews = data as List;
-  //     });
-  //   });
-  // }
+  Future _refreshEntertainmentTab() async {
+    print("Refrshing");
+
+    await getEntertainmentData();
+    setState(() {});
+  }
+
+  Future _refreshTechTab() async {
+    print("Refrshing");
+
+    await getTechnologyData();
+    setState(() {});
+  }
+
+  Future _refreshScienceTab() async {
+    print("Refrshing");
+
+    await getScienceData();
+    setState(() {});
+  }
+
+  Future _refreshSportsTab() async {
+    print("Refrshing");
+
+    await getSportsData();
+    setState(() {});
+  }
+
+  Future _refreshHealthTab() async {
+    print("Refrshing");
+
+    await getHealthData();
+    setState(() {});
+  }
+
+  Future _refreshBusinessTab() async {
+    print("Refrshing");
+
+    await getBusinessData();
+    setState(() {});
+  }
 }

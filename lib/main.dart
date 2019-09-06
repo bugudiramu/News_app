@@ -2,21 +2,28 @@ import 'package:flutter/material.dart';
 import 'package:news_app/ui/login.dart';
 
 void main() async {
-  runApp(
-    MaterialApp(
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
       home: Login(),
       debugShowCheckedModeBanner: false,
       title: "Buzzyfeed",
       theme: ThemeData(
-          brightness: Brightness.dark,
-          fontFamily: "Montserrat",
-          textTheme: TextTheme(
-            headline: TextStyle(fontWeight: FontWeight.w900, fontSize: 25.0),
-            body2: TextStyle(fontStyle: FontStyle.italic),
-            subhead: TextStyle(fontWeight: FontWeight.bold),
-          )),
-    ),
-  );
+        brightness: Brightness.dark,
+        fontFamily: "Montserrat",
+        // Dynamic font styles
+        textTheme: TextTheme(
+          headline: TextStyle(fontWeight: FontWeight.w800, fontSize: 23.0),
+          body2: TextStyle(fontStyle: FontStyle.italic),
+          subhead: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
 }
 
 //Android-X error

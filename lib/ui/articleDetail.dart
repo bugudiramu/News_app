@@ -10,6 +10,7 @@ class ArticleDetail extends StatefulWidget {
 }
 
 class _ArticleDetailState extends State<ArticleDetail> {
+  // Dynamic Link
   final myUrl = "https://buzzyfeed.page.link/AJDA";
 
   @override
@@ -17,15 +18,15 @@ class _ArticleDetailState extends State<ArticleDetail> {
     return Scaffold(
       appBar: AppBar(
         title: Text("BuzzyFeed"),
+        elevation: 0.0,
         centerTitle: true,
-        // backgroundColor: Colors.blueGrey,
-        backgroundColor: Colors.black,
       ),
       body: Container(
-        padding: EdgeInsets.only(top: 20.0),
+        padding: EdgeInsets.only(top: 5.0),
         alignment: Alignment.center,
         child: ListView(
           children: <Widget>[
+            // Title
             Container(
               margin: EdgeInsets.only(left: 10.0, right: 10.0),
               child: Text(
@@ -48,13 +49,15 @@ class _ArticleDetailState extends State<ArticleDetail> {
                       style: Theme.of(context).textTheme.subhead,
                     ),
                   ),
+                  // Share button
                   Container(
                     // alignment: Alignment.center,
                     child: IconButton(
                       icon: Icon(Icons.share),
                       iconSize: 30.0,
                       color: Colors.grey,
-                      onPressed: () => Share.share("Visit my url at $myUrl"),
+                      onPressed: () => Share.share(
+                          "Click the link to read the article $myUrl"),
                     ),
                   ),
                 ],
@@ -63,6 +66,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
             Padding(
               padding: EdgeInsets.only(bottom: 10.0),
             ),
+            // Image
             Container(
               alignment: Alignment.center,
               padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
@@ -86,13 +90,14 @@ class _ArticleDetailState extends State<ArticleDetail> {
                 ],
               ),
             ),
-
+// Description
             Container(
               padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
               child: Text(
                   "${widget.articles['description'] == null ? 'Description of Article' : widget.articles['description']}",
                   style: Theme.of(context).textTheme.subhead),
             ),
+            // Content
             Container(
               padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
               child: Text(
@@ -100,6 +105,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
                 style: Theme.of(context).textTheme.body1,
               ),
             ),
+            // Read the full article by clicking the URL
             Container(
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
               child: Row(
@@ -115,7 +121,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
                   ),
                   InkWell(
                     onTap: () async {
-                      // **** open the link in the default browser when link is clicked ****
+                      //  open the link in the default browser when link is clicked
                       if (await canLaunch(
                           "${widget.articles['url'] == null ? 'Loading' : widget.articles['url'].toString()}")) {
                         await launch("${widget.articles['url'].toString()}");
