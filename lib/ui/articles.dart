@@ -122,10 +122,9 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-// Check the internet connectivity
+    // Check the internet connectivity
     this.checkDataConnectivity();
     // **** invoking both api calls when the app started to build ****
-    isLoading = true;
     this.getTrendingData();
     this.getEntertainmentData();
     this.getTechnologyData();
@@ -255,7 +254,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
           child: ListView(
             children: <Widget>[
               UserAccountsDrawerHeader(
-                decoration: BoxDecoration(color: Colors.blueGrey),
+                decoration: BoxDecoration(color: Colors.black26),
                 // **** calling username() funtion and others aswell ****
                 accountName: Text("${username()}"),
                 accountEmail: Text("${email()}"),
@@ -279,6 +278,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                   leading: Image.asset(
                     "images/logout.png",
                     height: 20.0,
+                    color: Colors.white,
                   ),
                   title: Text(
                     "LogOut",
@@ -293,7 +293,8 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
           title: Text("BuzzyFeed"),
           centerTitle: true,
           elevation: 0,
-          backgroundColor: Colors.blueGrey,
+          // backgroundColor: Colors.blueGrey,
+          backgroundColor: Colors.black,
           // **** Tabbar in appbar ****
           bottom: TabBar(
             isScrollable: true,
@@ -345,8 +346,11 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
         body: Stack(
           children: <Widget>[
             // **** Showing loading Indicator ****
+
             Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Colors.black26),
+              ),
             ),
 
             // **** Building TabBarView for showing the news in the body ****
@@ -363,18 +367,31 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                     return Column(
                       children: <Widget>[
                         Card(
-                          color: Colors.blueGrey,
+                          // color: Colors.blueGrey,
+                          color: Colors.black,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: ListTile(
                             onTap: () {
-                              debugPrint("ListTile tapped!");
+                              // debugPrint("ListTile tapped!");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      ArticleDetail(
+                                    articles: trendingNews[i] == null
+                                        ? Text("Loading!")
+                                        : trendingNews[i],
+                                  ),
+                                ),
+                              );
                             },
                             title: Container(
                               child: Stack(
                                 // ****  AlignmentDirectional is used to place the text whereever we wanted on the image
                                 alignment: AlignmentDirectional(0, 1),
+
                                 children: <Widget>[
                                   // **** Hero animation ****
                                   Hero(
@@ -459,13 +476,25 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                     return Column(
                       children: <Widget>[
                         Card(
-                          color: Colors.blueGrey,
+                          // color: Colors.blueGrey,
+                          color: Colors.black,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: ListTile(
                             onTap: () {
                               debugPrint("Hello");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      ArticleDetail(
+                                    articles: entertainmentNews[i] == null
+                                        ? Text("Loading!")
+                                        : entertainmentNews[i],
+                                  ),
+                                ),
+                              );
                             },
                             title: Container(
                               child: Stack(
@@ -550,13 +579,25 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                     return Column(
                       children: <Widget>[
                         Card(
-                          color: Colors.blueGrey,
+                          // color: Colors.blueGrey,
+                          color: Colors.black,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: ListTile(
                             onTap: () {
                               debugPrint("Hello");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      ArticleDetail(
+                                    articles: techNews[i] == null
+                                        ? Text("Loading!")
+                                        : techNews[i],
+                                  ),
+                                ),
+                              );
                             },
                             title: Container(
                               child: Stack(
@@ -637,13 +678,25 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                     return Column(
                       children: <Widget>[
                         Card(
-                          color: Colors.blueGrey,
+                          // color: Colors.blueGrey,
+                          color: Colors.black,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: ListTile(
                             onTap: () {
                               debugPrint("Hello");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      ArticleDetail(
+                                    articles: scienceNews[i] == null
+                                        ? Text("Loading!")
+                                        : scienceNews[i],
+                                  ),
+                                ),
+                              );
                             },
                             title: Container(
                               child: Stack(
@@ -726,13 +779,25 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                     return Column(
                       children: <Widget>[
                         Card(
-                          color: Colors.blueGrey,
+                          // color: Colors.blueGrey,
+                          color: Colors.black,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: ListTile(
                             onTap: () {
                               debugPrint("Hello");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      ArticleDetail(
+                                    articles: sportsNews[i] == null
+                                        ? Text("Loading!")
+                                        : sportsNews[i],
+                                  ),
+                                ),
+                              );
                             },
                             title: Container(
                               child: Stack(
@@ -814,13 +879,25 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                     return Column(
                       children: <Widget>[
                         Card(
-                          color: Colors.blueGrey,
+                          // color: Colors.blueGrey,
+                          color: Colors.black,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: ListTile(
                             onTap: () {
                               debugPrint("Hello");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      ArticleDetail(
+                                    articles: healthNews[i] == null
+                                        ? Text("Loading!")
+                                        : healthNews[i],
+                                  ),
+                                ),
+                              );
                             },
                             title: Container(
                               child: Stack(
@@ -902,13 +979,25 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                     return Column(
                       children: <Widget>[
                         Card(
-                          color: Colors.blueGrey,
+                          // color: Colors.blueGrey,
+                          color: Colors.black,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
                           child: ListTile(
                             onTap: () {
                               debugPrint("Hello");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (BuildContext context) =>
+                                      ArticleDetail(
+                                    articles: businessNews[i] == null
+                                        ? Text("Loading!")
+                                        : businessNews[i],
+                                  ),
+                                ),
+                              );
                             },
                             title: Container(
                               child: Stack(

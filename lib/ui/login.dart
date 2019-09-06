@@ -249,14 +249,6 @@ class _LoginState extends State<Login> with SingleTickerProviderStateMixin {
                   ),
                 ],
               ),
-              // actions: <Widget>[
-              //   FlatButton(
-              //     child: Text("Ok"),
-              //     onPressed: () {
-              //       Navigator.of(context).pop();
-              //     },
-              //   )
-              // ],
             );
           });
       /*Alert(

@@ -7,7 +7,14 @@ void main() async {
       home: Login(),
       debugShowCheckedModeBanner: false,
       title: "Buzzyfeed",
-      theme: ThemeData(fontFamily: "Montserrat"),
+      theme: ThemeData(
+          brightness: Brightness.dark,
+          fontFamily: "Montserrat",
+          textTheme: TextTheme(
+            headline: TextStyle(fontWeight: FontWeight.w900, fontSize: 25.0),
+            body2: TextStyle(fontStyle: FontStyle.italic),
+            subhead: TextStyle(fontWeight: FontWeight.bold),
+          )),
     ),
   );
 }

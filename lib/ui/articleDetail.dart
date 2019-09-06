@@ -16,13 +16,10 @@ class _ArticleDetailState extends State<ArticleDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Text("Article"),
+        title: Text("BuzzyFeed"),
         centerTitle: true,
-        backgroundColor: Colors.blueGrey,
+        // backgroundColor: Colors.blueGrey,
+        backgroundColor: Colors.black,
       ),
       body: Container(
         padding: EdgeInsets.only(top: 20.0),
@@ -55,9 +52,9 @@ class _ArticleDetailState extends State<ArticleDetail> {
                     // alignment: Alignment.center,
                     child: IconButton(
                       icon: Icon(Icons.share),
-                      color: Colors.blueGrey,
-                      onPressed: () =>
-                          Share.share("Visit my url at $myUrl"),
+                      iconSize: 30.0,
+                      color: Colors.grey,
+                      onPressed: () => Share.share("Visit my url at $myUrl"),
                     ),
                   ),
                 ],
@@ -77,12 +74,12 @@ class _ArticleDetailState extends State<ArticleDetail> {
                       alignment: Alignment.center,
                       fit: BoxFit.cover,
                       height: 280.0,
-                      width: MediaQuery.of(context).size.width,
+                      // width: MediaQuery.of(context).size.width,
                       placeholder: 'images/loading.gif',
                       image: widget.articles['urlToImage'] == null
                           ? Image.asset(
                               'images/imgPlaceholder.png',
-                            ).toString().toString()
+                            ).toString()
                           : widget.articles['urlToImage'],
                     ),
                   ),
