@@ -415,7 +415,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                               title: Container(
                                 child: Stack(
                                   //   AlignmentDirectional is used to place the text whereever we wanted on the image
-                                  alignment: AlignmentDirectional(0, 1),
+                                  alignment: AlignmentDirectional(0, 0.9),
 
                                   children: <Widget>[
                                     //  Hero animation
@@ -441,9 +441,11 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                                 .toString(),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16.0,
-                                            fontWeight: FontWeight.bold),
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w300,
+                                          backgroundColor: Colors.black26,
+                                        ),
                                       ),
                                     ),
                                   ],

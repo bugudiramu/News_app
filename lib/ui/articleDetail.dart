@@ -17,23 +17,58 @@ class _ArticleDetailState extends State<ArticleDetail> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("BuzzyFeed"),
+        // title: Text("BuzzyFeed"),
         elevation: 0.0,
         centerTitle: true,
       ),
       body: Container(
-        padding: EdgeInsets.only(top: 5.0),
+        // padding: EdgeInsets.only(top: 5.0),
         alignment: Alignment.center,
         child: ListView(
           children: <Widget>[
+            //Back arrow
+            // Container(
+            //   alignment: Alignment.topLeft,
+            //   child: IconButton(
+            //     icon: Icon(Icons.arrow_back),
+            //     onPressed: () => Navigator.of(context).pop(),
+            //   ),
+            // ),
+            // Image
+            Container(
+              alignment: Alignment.center,
+              // padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+              child: Stack(
+                children: <Widget>[
+                  Hero(
+                    tag: widget.articles['title'],
+                    child: FadeInImage.assetNetwork(
+                      alignment: Alignment.center,
+                      fit: BoxFit.cover,
+                      height: 280.0,
+                      // width: MediaQuery.of(context).size.width,
+                      placeholder: 'images/loading.gif',
+                      image: widget.articles['urlToImage'] == null
+                          ? Image.asset(
+                              'images/imgPlaceholder.png',
+                            ).toString()
+                          : widget.articles['urlToImage'],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 5.0),
             // Title
             Container(
-              margin: EdgeInsets.only(left: 10.0, right: 10.0),
+              padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
               child: Text(
                 "${widget.articles['title'] == null ? 'Title Here' : widget.articles['title']}",
                 style: Theme.of(context).textTheme.headline,
               ),
             ),
+            Divider(),
+
             // Author name
             Container(
               padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 8.0),
@@ -66,30 +101,8 @@ class _ArticleDetailState extends State<ArticleDetail> {
             Padding(
               padding: EdgeInsets.only(bottom: 10.0),
             ),
-            // Image
-            Container(
-              alignment: Alignment.center,
-              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-              child: Stack(
-                children: <Widget>[
-                  Hero(
-                    tag: widget.articles['title'],
-                    child: FadeInImage.assetNetwork(
-                      alignment: Alignment.center,
-                      fit: BoxFit.cover,
-                      height: 280.0,
-                      // width: MediaQuery.of(context).size.width,
-                      placeholder: 'images/loading.gif',
-                      image: widget.articles['urlToImage'] == null
-                          ? Image.asset(
-                              'images/imgPlaceholder.png',
-                            ).toString()
-                          : widget.articles['urlToImage'],
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            Divider(),
+
 // Description
             Container(
               padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
@@ -97,6 +110,7 @@ class _ArticleDetailState extends State<ArticleDetail> {
                   "${widget.articles['description'] == null ? 'Description of Article' : widget.articles['description']}",
                   style: Theme.of(context).textTheme.subhead),
             ),
+            Divider(),
             // Content
             Container(
               padding: EdgeInsets.symmetric(horizontal: 18.0, vertical: 5.0),
