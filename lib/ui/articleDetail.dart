@@ -18,9 +18,12 @@ class _ArticleDetailState extends State<ArticleDetail> {
     return Scaffold(
       appBar: AppBar(
         // title: Text("BuzzyFeed"),
-        elevation: 0.0,
-        centerTitle: true,
-      ),
+        // elevation: 0.0,
+        // centerTitle: true,
+        
+          
+        ),
+    
       body: Container(
         // padding: EdgeInsets.only(top: 5.0),
         alignment: Alignment.center,

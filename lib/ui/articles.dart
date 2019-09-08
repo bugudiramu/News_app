@@ -316,7 +316,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                     color: Colors.white,
                   ),
                   title: Text(
-                    "LogOut",
+                    "Logout",
                     style: Theme.of(context).textTheme.subhead,
                   ),
                 ),
@@ -335,7 +335,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
             indicatorColor: Colors.white70,
             indicatorPadding: const EdgeInsets.all(2.0),
             //  The size of the indicator is same as the size of the text
-            indicatorSize: TabBarIndicatorSize.label,
+            // indicatorSize: TabBarIndicatorSize.label,
             indicatorWeight: 5.0,
 
             tabs: <Widget>[
@@ -415,7 +415,7 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                               title: Container(
                                 child: Stack(
                                   //   AlignmentDirectional is used to place the text whereever we wanted on the image
-                                  alignment: AlignmentDirectional(0, 0.9),
+                                  alignment: AlignmentDirectional(0, 1),
 
                                   children: <Widget>[
                                     //  Hero animation
@@ -552,9 +552,11 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                                 .toString(),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.bold),
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w300,
+                                          backgroundColor: Colors.black26,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -655,9 +657,11 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                             : techNews[i]['title'].toString(),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.bold),
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w300,
+                                          backgroundColor: Colors.black26,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -762,9 +766,11 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                                 .toString(),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.bold),
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w300,
+                                          backgroundColor: Colors.black26,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -869,9 +875,11 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                             : sportsNews[i]['title'].toString(),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.bold),
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w300,
+                                          backgroundColor: Colors.black26,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -976,9 +984,11 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                             : healthNews[i]['title'].toString(),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.bold),
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w300,
+                                          backgroundColor: Colors.black26,
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -1084,9 +1094,11 @@ class _AllNewsState extends State<AllNews> with SingleTickerProviderStateMixin {
                                                 .toString(),
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18.0,
-                                            fontWeight: FontWeight.bold),
+                                          color: Colors.white,
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w300,
+                                          backgroundColor: Colors.black26,
+                                        ),
                                       ),
                                     ),
                                   ],
